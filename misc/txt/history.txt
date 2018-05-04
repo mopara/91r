@@ -1,9 +1,11 @@
 ra_login history:
 - conda create -n 91r python=2
 - source activate 91r
-- conda install numpy scipy matplotlib scikit-learn keras tensorflow opencv
+- conda install numpy scipy matplotlib scikit-learn keras tensorflow
 - conda install mkl cudnn -c anaconda
 - conda install pytorch=0.4.0 torchvision -c pytorch
+- pip install opencv-python (conda version doesnt do video i/o: https://github.com/ContinuumIO/anaconda-issues/issues/121)
+- pip install ranger-fm
 
 git:
 > http://kbroman.org/github_tutorial/pages/init.html
