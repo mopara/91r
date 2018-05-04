@@ -31,7 +31,7 @@ git:
 shortcuts:
 - ssh onto server (https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
   > home: scp ~/.ssh/id_rsa.pub ra_login@140.247.98.202:
-  > server: cat ~/id_rsa.pub >> .ssh/authorized_keys
+  > server: cat ~/id_rsa.pub >> .ssh/authorized_keys (***REMOVE WHEN RESEARCH COMPLETE***)
   > server: rm ~/id_rsa.pub
   > server: chmod 700 ~/.ssh; chmod 640 ~/.ssh/authorized_keys
   - home: ra
