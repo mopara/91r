@@ -12,13 +12,7 @@ git:
     basically add ~/.ssh/id_rsa.pub to github account's ssh keys
 > https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
 - create .gitignore
-  - **/.DS_Store
-  - **.gz
-  - **.mov
-  - **.npy
-  - **.pdf
-  - **.T
-  - **.zip
+  - see current file
 - git init (91r directory)
 - git config user.email 'opara@college.harvard.edu' (check with cat .git/config)
 - git config user.name 'Michael Opara'
