@@ -15,8 +15,6 @@ def save_vids(file_names, dst_dir):
 
     vid_arr = np.empty((num_frames, height, width, 3), dtype=np.uint8)
 
-    print "vid_arr.shape", vid_arr.shape
-
     for frame_num in xrange(num_frames):
       ret, frame = vid.read()
 
