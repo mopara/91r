@@ -1,0 +1,116 @@
+x brew install opencv
+x write probe shell script (https://stackoverflow.com/a/11236144)
+- find info on tom's gpu (https://askubuntu.com/q/72766)
+  - ssh ra_login@140.247.93.202
+  - inductive_bias
+x install opencv with pip (to import cv2) (https://stackoverflow.com/a/42166299)
+  x add opencv to pythonpath (https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_setup/py_setup_in_fedora/py_setup_in_fedora.html)
+x convert videos to saved numpy arrays x[t,w,h,c]
+  x free up memory
+x understand vaes
+  x rewatch vae lecture
+    - watch dude's video
+    - jaan article on vaes
+    - white paper on vae's
+    - watch carnegie mellon lecture
+    - pyro implementation
+    - keras tutorial (https://blog.keras.io/building-autoencoders-in-keras.html)
+    - nick's other links
+    - other resources found
+  - vae research
+    - watch video
+    - scan over white paper
+    - keras tutorial
+    - pyro
+x write dataloader/dataset class for video stuff
+  - 008.pdf pg.108
+  - """
+    ...
+    from torch.utils.data import TensorDataset, DataLoader
+    ...
+    loader = DataLoader(TensorDataset(x, y), batch_size=8)
+    ...
+    for x_batch, y_batch in loader:
+    ...
+    """
+- figure out how to play movies in jupyter
+  - http://tiao.io/posts/notebooks/embedding-matplotlib-animations-in-jupyter-as-interactive-javascript-widgets/
+- visualization
+  - network visualization with visdom/torchviz
+    - https://discuss.pytorch.org/t/print-autograd-graph/692
+    - https://github.com/szagoruyko/functional-zoo/blob/master/resnet-18-export.ipynb
+  - t-sne representation of features (https://cs.stanford.edu/people/karpathy/cnnembed/)
+    - 3d space that rotates automatically and can select points
+    - http://colah.github.io/posts/2014-10-Visualizing-MNIST/
+    - https://distill.pub/2016/misread-tsne/
+  - sample from z for different choices of z[i], z[j], z[k] (holding other dimensions fixed)
+  - probability distributions changing over time
+    - http://szhao.me/2017/06/10/a-tutorial-on-mmd-variational-autoencoders.html
+  =============================================================================
+  - visualize filters
+    - https://blog.keras.io/building-autoencoders-in-keras.html
+  - visualize activations
+  - saliency maps
+  - feature inversion
+  - deep dream
+  - try and interpret latent classes
+- segnet
+  - http://mi.eng.cam.ac.uk/projects/segnet/
+  - segmenting on the 1d axis of time
+  - segmenting on 4d spacetime maintaining contiguous regions
+- identify different possible architectures
+  - pyro:
+    - http://pyro.ai/examples/vae.html
+    - number of layers, type of nonlinearities, number of hidden units, etc.
+    - observation likelihoods (gaussian, bernoulli, categorical, etc.)
+    - dimensionality of latent space
+  - convolutional vs dense layers
+  - info vae
+    - http://szhao.me/2017/06/10/a-tutorial-on-mmd-variational-autoencoders.html
+  - disentangled vae
+    - https://www.youtube.com/watch?v=9zKuYvjFFS8
+  - conditional
+    - https://github.com/Prasanna1991/pytorch-vae
+  - denoising autoencoders
+    - keras tutorial
+  - adversarial autoencoders
+    - https://blog.paperspace.com/adversarial-autoencoders-with-pytorch/
+  - https://www.jeremyjordan.me/autoencoders/
+    - undercomplete
+    - sparse
+    - denoising
+    - contractive
+  - conditional vae
+    - https://github.com/Prasanna1991/pytorch-vae
+    - http://deeplearning.jp/en/cvae/
+  - different optimization
+    - see torch.optim
+    - http://ruder.io/optimizing-gradient-descent/
+  - hypersherical vae
+    - http://tkipf.github.io
+  - variational graph ae
+    - http://tkipf.github.io
+- arguments
+  - quantity noise
+  - noise distribution
+  - number hidden layers
+  - type of layers
+
+pytorch questions
+- https://discuss.pytorch.org/t/why-do-we-need-to-set-the-gradients-manually-to-zero-in-pytorch/4903
+- https://discuss.pytorch.org/t/how-to-use-the-backward-functions-for-multiple-losses/1826
+
+nick's links
+- http://kvfrans.com/variational-autoencoders-explained/
+- http://szhao.me/2017/06/10/a-tutorial-on-mmd-variational-autoencoders.html
+
+points to lots of other resources
+- http://blog.fastforwardlabs.com/2016/08/12/introducing-variational-autoencoders-in-prose-and.html
+- http://blog.fastforwardlabs.com/2016/08/22/under-the-hood-of-the-variational-autoencoder-in.html
+
+not really helpful but also links to a lot of other things
+- https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
+
+actually not bad
+- https://www.jeremyjordan.me/autoencoders/
+- https://www.jeremyjordan.me/variational-autoencoders/

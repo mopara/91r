@@ -1,0 +1,44 @@
+ra_login history:
+- conda create -n vae python=2
+- source activate vae
+- conda install numpy scipy matplotlib scikit-learn keras tensorflow pytorch torchvision -c pytorch
+- scp vae.sh ra_login@140.247.93.202:/home/ra_login/
+
+git:
+> http://kbroman.org/github_tutorial/pages/init.html
+  - create github repo
+> http://kbroman.org/github_tutorial/pages/first_time.html
+  - set up ssh stuff as specified if haven't done it already
+    basically add ~/.ssh/id_rsa.pub to github account's ssh keys
+> https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
+- create .gitignore
+  - **/.DS_Store
+  - **.gz
+  - **.mov
+  - **.npy
+  - **.pdf
+  - **.T
+  - **.zip
+- git init (91r directory)
+- git config user.email 'opara@college.harvard.edu' (check with cat .git/config)
+- git config user.name 'Michael Opara'
+- git config color.ui true
+- git add .
+- git commit -m "first commit"
+- git remote add origin git@github.com:mopara/91r.git
+- git push -u origin master
+
+shortcuts:
+- ssh onto server (https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
+  > home: scp ~/.ssh/id_rsa.pub ra_login@140.247.98.202:
+  > server: cat ~/id_rsa.pub >> .ssh/authorized_keys
+  > server: rm ~/id_rsa.pub
+  > server: chmod 700 ~/.ssh; chmod 640 ~/.ssh/authorized_keys
+  - home: ra
+- push code to github
+  > git commit -m "..."
+  > git push -u origin master
+  - push
+- pull code from github
+  > git pull origin master
+  - pull

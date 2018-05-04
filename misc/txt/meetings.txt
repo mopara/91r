@@ -1,0 +1,106 @@
+todo:
+x redownload dlb
+x split up dlb
+  x write pdftk wrapper
+x start hands on ml
+- read vae.pdf
+- implement vae
+- figure out how to run vae on nmist
+- figure out how to run on video frames
+- read white_paper.pdf
+
+jupyter
+- 2 space indentation
+- autocomplete should cycle through not list all possibilities
+
+links:
+- http://kvfrans.com/variational-autoencoders-explained/
+- http://szhao.me/2017/06/10/a-tutorial-on-mmd-variational-autoencoders.html
+- https://blog.keras.io/building-autoencoders-in-keras.html
+
+-------------------------------------------------------------------------------
+
+test out different vae architectures
+look at individual frames
+usee frames as training data (not necessarily in order)
+
+prior over highest level weights are gonna be
+
+t-sne on low level representation should reflect discrete segments
+- https://distill.pub/2016/misread-tsne/
+
+reflect continuity in time
+
+each individual frame, reduce dimensions
+train vae on frames
+communicate these in jupyter notebooks
+present
+
+short 15 minute presentation at end of semester
+
+when you go through technical
+
+run analyses on model
+try out different architectures, batches, size of input data, weights -- find
+  all the different "knobs" you can twist on the model
+
+go through keras tutorial again
+
+mnist
+  use 10 dimensions on highest level
+  t-sne dim red on sklearn
+
+-------------------------------------------------------------------------------
+
+how to install stuff on gpu
+practical standpoint how much gpu compute needed to run vae
+day or two to run vae on machine
+different video set to use
+
+scott linderman (temporal segmentation)
+
+neural networks in general
+- implementation
+- etc.
+general idea behind recurrent neural networks
+everything you can find out about variational auto encoders
+- papers
+- implementations
+- tutorials
+the white paper
+- really understand it
+
+-------------------------------------------------------------------------------
+
+find out how the things vary with
+visualization isnt sensitive to changes
+
+summary
+- describe what a vae is
+- architectures to test
+- interesting/difffernet about them
+- what have affected results
+- measures to evaluate results
+
+ex
+- loss we use doesnt matter
+  - but here's where it counts
+- figures in jupyter notebook
+- lot of different models on one video preferred to other way around
+- go through preprocessing steps
+- compare t-sne on raw frames vs t-sne on low dim representation
+
+- raise questions at end
+  - why sample only from mvn
+  - write down any questions i have
+
+- send stuff (code/slides/paper?) to nick
+
+here the question
+here are background
+here are the measures
+here are the results
+
+identify challenges ive come across
+
+give narrative over experiment and explain things
