@@ -32,8 +32,7 @@ def save_vids(file_names, dst_dir):
 
     print "%s saved. shape: %s. %ggb" % (file_name, vid_arr.shape, gb)
 
-# python vids.py ../vids/src/a4.sax.mov ../vids
-# python vids.py ../vids/src/*.mov ../vids
+# 91r/: python src/vids.py vids/src/a4.sax.mov -o vids/
 if __name__ == "__main__":
   args = util.parse_args()
 

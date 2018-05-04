@@ -19,7 +19,7 @@ def save_imgs(file_names, dst_dir):
 
       util.save(arr, file_name, dst_dir)
 
-# python mnist.py ../mnist/src/*-ubyte ../mnist
+# 91r/: python src/mnist.py mnist/src/*-ubyte -o mnist/
 if __name__ == "__main__":
   args = util.parse_args()
 
