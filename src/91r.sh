@@ -7,7 +7,7 @@ alias d='source deactivate'
 bind '"\t":menu-complete'
 bind 'set completion-ignore-case on'
 
-pull() {
+function pull {
   pushd '/home/ra_login/91r'
   git pull origin master
   popd
