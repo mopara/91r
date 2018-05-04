@@ -1,8 +1,8 @@
 ra_login history:
-- conda create -n vae python=2
-- source activate vae
+- conda create -n 91r python=2
+- source activate 91r
 - conda install numpy scipy matplotlib scikit-learn keras tensorflow pytorch torchvision -c pytorch
-- scp vae.sh ra_login@140.247.93.202:/home/ra_login/
+- scp 91r.sh ra_login@140.247.93.202:/home/ra_login/
 
 git:
 > http://kbroman.org/github_tutorial/pages/init.html
