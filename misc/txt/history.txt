@@ -1,8 +1,9 @@
 ra_login history:
 - conda create -n 91r python=2
 - source activate 91r
-- conda install numpy scipy matplotlib scikit-learn keras tensorflow pytorch torchvision -c pytorch
-- scp 91r.sh ra_login@140.247.93.202:/home/ra_login/
+- conda install numpy scipy matplotlib scikit-learn keras tensorflow opencv
+- conda install mkl cudnn -c anaconda
+- conda install pytorch=0.4.0 torchvision -c pytorch
 
 git:
 > http://kbroman.org/github_tutorial/pages/init.html
