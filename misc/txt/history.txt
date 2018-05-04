@@ -24,7 +24,7 @@ git:
 - git config user.name 'Michael Opara'
 - git config color.ui true
 - git add .
-- git commit -m "first commit"
+- git commit -m 'first commit'
 - git remote add origin git@github.com:mopara/91r.git
 - git push -u origin master
 
