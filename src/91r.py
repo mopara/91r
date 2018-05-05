@@ -61,7 +61,7 @@ def get_batches(X, Y):
   return data.DataLoader(data.TensorDataset(X, Y), batch_size=batch_size,
     shuffle=shuffle)
 
-def data(file_name, device):
+def get_data(file_name, device):
   X = (T.load(file_name).float()/255).to(device)
   N = X.shape[0]
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
   device = T.device("cuda" if args.cuda else "cpu")
 
-  X_trn, Xf_trn, height, width, D_in = data(args.train, device)
+  X_trn, Xf_trn, height, width, D_in = get_data(args.train, device)
 
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
@@ -86,6 +86,6 @@ if __name__ == "__main__":
   train(ae, get_batches(Xf_trn, Xf_trn), args.num_epochs)
 
   if args.test:
-    X_tst, Xf_tst, _, _, _ = data(args.test, device)
+    X_tst, Xf_tst, _, _, _ = get_data(args.test, device)
 
     test(ae, get_batches(Xf_tst, Xf_tst))
