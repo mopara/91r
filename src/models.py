@@ -90,7 +90,7 @@ class AE3(nn.Module):
   def forward(self, X):
     return (self.ae(X), None)
 
-def AE4(nn.Module):
+class AE4(nn.Module):
   def __init__(self, D_in):
     super(AE4, self).__init__()
 
