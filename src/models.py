@@ -73,13 +73,13 @@ class AE3(nn.Module):
       nn.Linear(128, 64),
       nn.ReLU(),
       nn.Linear(64, 32),
-      nn.Sigmoid())
-    self.enc = enc = nn.Sequential(
-      nn.Linear(D_in, 128),
+      nn.ReLU())
+    self.dec = dec = nn.Sequential(
+      nn.Linear(32, 64),
       nn.ReLU(),
-      nn.Linear(128, 64),
+      nn.Linear(64, 128),
       nn.ReLU(),
-      nn.Linear(64, 32),
+      nn.Linear(128, D_out),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)
     self.opt = optim.Adadelta(ae.parameters())
