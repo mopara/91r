@@ -73,8 +73,6 @@ if __name__ == "__main__":
   N = shape[0]
   D = np.prod(shape[1:])
 
-  print args.l1
-
   # ae1 = models.AE1(D, 32, D).to(device)
   ae2 = models.AE2(D, 32, D, args.l1).to(device)
 
