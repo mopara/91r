@@ -59,8 +59,6 @@ def get_batches(file_name, batch_size, shuffle, device):
 
 # python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 ../mnist/train-images-idx3-ubyte.T
 if __name__ == "__main__":
-  print "cuda", T.cuda.is_available()
-
   args = parse_args()
 
   T.manual_seed(args.seed)
@@ -73,6 +71,7 @@ if __name__ == "__main__":
   N = shape[0]
   D = np.prod(shape[1:])
 
-  ae = models.AE1(D, 32, D).to(device)
+  # ae1 = models.AE1(D, 32, D).to(device)
+  ae2 = models.AE2(D, 32, D, 1e-4).to(device)
 
-  train(ae, args.num_epochs, batches, N)
+  train(ae2, args.num_epochs, batches, N)

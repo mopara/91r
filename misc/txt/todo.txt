@@ -114,3 +114,20 @@ not really helpful but also links to a lot of other things
 actually not bad
 - https://www.jeremyjordan.me/autoencoders/
 - https://www.jeremyjordan.me/variational-autoencoders/
+
+regularization:
+- activity, kernel, bias regularization
+  - https://keras.io/regularizers/
+- adding l1, l2 to pytorch
+  - https://discuss.pytorch.org/t/simple-l2-regularization/139/9
+  - l2 can be set in optim functions with weight decay
+  - l1 can be added manually in model.loss function
+    - https://stackoverflow.com/a/47196174
+- weight vs activity regularization
+  - https://github.com/keras-team/keras/issues/3236#issuecomment-233175942
+  - https://stackoverflow.com/a/41299554
+
+cuda:
+- only need to add .to() to two places
+  - https://discuss.pytorch.org/t/automatically-move-everything-to-gpu-without-calling-cuda/1818/3
+  - consistent with pytorch_vae tutorial
