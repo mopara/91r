@@ -35,7 +35,7 @@ class AE1(nn.Module):
 
 class AE2(nn.Module):
   def __init__(self, D_in, H, D_out, l1):
-    super(AE1, self).__init__()
+    super(AE2, self).__init__()
 
     self.enc = enc = nn.Sequential(
       nn.Linear(D_in, H),
