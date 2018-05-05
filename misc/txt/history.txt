@@ -50,3 +50,6 @@ workflow:
 - server: pull
 - server: inspect updated scripts with ranger to make sure it updated correctly
 - server: run scripts
+
+ssh:
+- local: https://www.howtogeek.com/howto/linux/keep-your-linux-ssh-session-from-disconnecting/
