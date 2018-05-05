@@ -7,18 +7,18 @@ import torch.utils.data as data
 def parse_args():
   parser = argparse.ArgumentParser()
 
-  parser.add_argument("--seed", default=1, type=int, metavar="S",
-    help="random seed (default: 1)")
   parser.add_argument("-s", "--shuffle", action="store_true", default=False,
     help="shuffle training data (default: false)")
+  parser.add_argument("-c", "--cuda", action="store_true", default=False,
+    help="enable CUDA training")
+  parser.add_argument("--seed", default=1, type=int,
+    help="random seed (default: 1)")
   parser.add_argument("-b", "--batch-size", default=128, type=int,
     help="input batch size for training (default: 128)", metavar="N")
   parser.add_argument("-n", "--num-epochs", default=10, type=int,
     help="number of epochs to train (default: 10)", metavar="E")
   parser.add_argument("--l1", default=0, type=float,
     help="L1 regularization coefficient (default: 0)", metavar="L1")
-  parser.add_argument("-c", "--cuda", action="store_true", default=False,
-    help="enable CUDA training")
   parser.add_argument("-i", "--test", type=str, help="testing dataset", metavar="X")
   parser.add_argument("-j", "--train", type=str, required=True,
     help="training dataset", metavar="X")
