@@ -72,6 +72,6 @@ if __name__ == "__main__":
   D = np.prod(shape[1:])
 
   # ae1 = models.AE1(D, 32, D).to(device)
-  ae2 = models.AE2(D, 32, D, 1e-4).to(device)
+  ae2 = models.AE2(D, 32, D, 0).to(device)
 
   train(ae2, args.num_epochs, batches, N)
