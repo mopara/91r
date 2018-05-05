@@ -47,11 +47,6 @@ class AE2(nn.Module):
       nn.Sigmoid()
     )
 
-    self.ae = ae = nn.Sequential(
-      enc,
-      dec
-    )
-
     self.opt = optim.Adadelta(ae.parameters())
     self.l1 = l1
 
@@ -63,4 +58,6 @@ class AE2(nn.Module):
     return L + L1
 
   def forward(self, X):
-    return self.ae(X)
+    Z = self.enc(X)
+
+    return (self.dec(Z), Z)
