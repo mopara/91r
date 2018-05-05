@@ -62,3 +62,28 @@ class AE2(nn.Module):
     Z = self.enc(X)
 
     return (self.dec(Z), Z)
+
+class AE3(nn.Module):
+  def __init__(self, D_in, D_out):
+    self.enc = enc = nn.Sequential(
+      nn.Linear(D_in, 128),
+      nn.ReLU(),
+      nn.Linear(128, 64),
+      nn.ReLU(),
+      nn.Linear(64, 32),
+      nn.Sigmoid())
+    self.enc = enc = nn.Sequential(
+      nn.Linear(D_in, 128),
+      nn.ReLU(),
+      nn.Linear(128, 64),
+      nn.ReLU(),
+      nn.Linear(64, 32),
+      nn.Sigmoid())
+    self.ae = ae = nn.Sequential(enc, dec)
+    self.opt = optim.Adadelta(ae.parameters())
+
+  def loss(self, Y_prd, Y, Z)
+    return F.binary_cross_entropy(Y_prd, Y)
+
+  def forward(self, X):
+    return self.ae(X)
