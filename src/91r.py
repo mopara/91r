@@ -4,7 +4,7 @@ import numpy as np
 import torch as T
 import torch.utils.data as data
 
-import torch.nn.functional as F
+T.backends.cudnn.enabled = False
 
 def parse_args():
   parser = argparse.ArgumentParser()

@@ -136,3 +136,10 @@ youtube:
 - https://www.youtube.com/watch?v=9zKuYvjFFS8&t=1s
 - https://www.youtube.com/watch?v=5WoItGTWV54&t=3002s
 - https://www.youtube.com/watch?v=uaaqyVS9-rM&t=1561s
+
+vs:
+- google: pytorch keras same code different results
+- https://discuss.pytorch.org/t/suboptimal-convergence-when-compared-with-tensorflow-model/5099
+- https://discuss.pytorch.org/t/the-same-model-produces-worse-results-on-pytorch-than-on-tensorflow/5380/9
+- https://stackoverflow.com/questions/48445942/pytorch-training-with-gpu-gives-worse-error-than-training-the-same-thing-with-c
+- https://www.reddit.com/r/MachineLearning/comments/7nw67c/d_pytorch_are_adam_and_rmsprop_okay/
