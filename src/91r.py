@@ -57,7 +57,7 @@ def test(model, batches):
 
   print "Average Test Loss: %g" % (loss/N)
 
-def get_batches(X, Y):
+def get_batches(X, Y, batch_size, shuffle):
   return data.DataLoader(data.TensorDataset(X, Y), batch_size=batch_size,
     shuffle=shuffle)
 
@@ -83,9 +83,10 @@ if __name__ == "__main__":
   # ae = models.AE3(D, D).to(device)
   ae = models.AE4(D_in).to(device)
 
-  train(ae, get_batches(Xf_trn, Xf_trn), args.num_epochs)
+  train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
+    args.num_epochs)
 
   if args.test:
     X_tst, Xf_tst, _, _, _ = get_data(args.test, device)
 
-    test(ae, get_batches(Xf_tst, Xf_tst))
+    test(ae, get_batches(Xf_tst, Xf_tst, args.batch_size, args.shuffle))
