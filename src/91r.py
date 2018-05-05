@@ -36,7 +36,7 @@ def train(model, batches, num_epochs):
 
     for (X, Y) in batches:
       Y_prd, batch_loss = model(X, Y)
-      loss += batch_loss
+      loss += batch_loss * X.size(0)
 
       model.opt.zero_grad()
       batch_loss.backward()
