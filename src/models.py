@@ -65,6 +65,8 @@ class AE2(nn.Module):
 
 class AE3(nn.Module):
   def __init__(self, D_in, D_out):
+    super(AE3, self).__init__()
+
     self.enc = enc = nn.Sequential(
       nn.Linear(D_in, 128),
       nn.ReLU(),
