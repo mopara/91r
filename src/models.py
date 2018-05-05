@@ -88,4 +88,4 @@ class AE3(nn.Module):
     return F.binary_cross_entropy(Y_prd, Y)
 
   def forward(self, X):
-    return self.ae(X)
+    return (self.ae(X), None)
