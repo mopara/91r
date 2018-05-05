@@ -2,9 +2,10 @@ from keras.layers import Input, Dense
 from keras.models import Model
 # from keras.datasets import mnist
 import numpy as np
+import torch as T
 
-x_train = np.load("/home/ra_login/91r/mnist/train-images-idx3-ubyte.T")
-x_test = np.load("/home/ra_login/91r/mnist/t10k-images-idx3-ubyte.T")
+x_train = T.load("/home/ra_login/91r/mnist/train-images-idx3-ubyte.T").numpy()
+x_test = T.load("/home/ra_login/91r/mnist/t10k-images-idx3-ubyte.T").numpy()
 
 x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
