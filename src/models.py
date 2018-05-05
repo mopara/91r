@@ -53,7 +53,7 @@ class AE2(nn.Module):
 
   def loss(self, Y_prd, Y, Z):
     L = F.binary_cross_entropy(Y_prd, Y)
-    # call mean() bc it'll eventually by multiplied by batch_size
+    # mean() instead of sum() bc it'll eventually by multiplied by batch_size
     L1 = self.l1 * Z.norm(p=1, dim=1).mean()
 
     return L + L1
@@ -89,3 +89,36 @@ class AE3(nn.Module):
 
   def forward(self, X):
     return (self.ae(X), None)
+
+def AE4(nn.Module):
+  def __init__(self, D_in):
+    super(AE4, self).__init__()
+
+    self.enc = enc = nn.Sequential(
+      nn.Linear(D_in, 128),
+      nn.ReLU(),
+      nn.Linear(128, 64),
+      nn.ReLU(),
+      nn.Linear(64, 32),
+      nn.ReLU())
+    self.dec = dec = nn.Sequential(
+      nn.Linear(32, 64),
+      nn.ReLU(),
+      nn.Linear(64, 128),
+      nn.ReLU(),
+      nn.Linear(128, D_in),
+      nn.Sigmoid())
+    self.ae = ae = nn.Sequential(enc, dec)
+    self.opt = optim.Adadelta(ae.parameters())
+
+  def forward(self, X, Y):
+    Y_prd = self.ae(X)
+
+    # let l(y_prd, y) be the average bce(y_prd[i], y[i])
+    # sum l(y_prd, y) over observation (y_prd, y) in the batch (Y_prd, Y)
+    loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
+
+    kernel_loss = 0
+    act_loss = 0
+
+    return (Y_prd, loss+kernel_loss+act_loss)

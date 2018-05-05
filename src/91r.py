@@ -1,10 +1,8 @@
 import argparse
+import models
 import numpy as np
-
 import torch as T
 import torch.utils.data as data
-
-import models
 
 def parse_args():
   parser = argparse.ArgumentParser()
@@ -13,53 +11,62 @@ def parse_args():
     help="random seed (default: 1)")
   parser.add_argument("--no-cuda", action="store_true", default=False,
     help="enable CUDA training")
-  parser.add_argument("data", type=str, help="input data", metavar="X")
+  parser.add_argument("--train", type=str, required=True,
+    help="training dataset", metavar="X")
+  parser.add_argument("--test", type=str, help="testing dataset", metavar="X")
   parser.add_argument("--batch-size", default=128, type=int,
     help="input batch size for training (default: 128)", metavar="N")
   parser.add_argument("--shuffle", action="store_true", default=False,
     help="shuffle training data (default: false")
-  parser.add_argument("--l1", default=1e-4, type=float,
-    help="L1 regularization coefficient (default: 1e-4)", metavar="L1")
+  parser.add_argument("--l1", default=0, type=float,
+    help="L1 regularization coefficient (default: 0)", metavar="L1")
   parser.add_argument("--num-epochs", default=10, type=int,
     help="number of epochs to train (default: 10)", metavar="E")
 
   return parser.parse_args()
 
-def train(model, num_epochs, batches, N):
+def train(model, batches, num_epochs):
   model.train()
 
+  N = len(batches.dataset)
+
   for epoch in xrange(num_epochs):
-    epoch_loss = 0
+    loss = 0
 
     for (X, Y) in batches:
-      batch_size = X.shape[0]
-
-      Y_prd, Z = model(X)
-
-      batch_loss = model.loss(Y_prd, Y, Z)
-      # batch_loss is the average loss per observation in a batch
-      # batch_loss * batch_size will be the total loss over the observations in the batch
-      epoch_loss += batch_loss * batch_size
-      # epoch_loss += batch_loss
+      Y_prd, batch_loss = model(X, Y)
+      loss += batch_loss
 
       model.opt.zero_grad()
       batch_loss.backward()
       model.opt.step()
 
-    fmt = "Epoch: %03d\tLoss: %g"
-    args = (epoch, epoch_loss/N)
+    print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
 
-    print fmt % args
+def test(model, batches):
+  model.eval()
 
-def get_batches(file_name, batch_size, shuffle, device):
-  X_trn = T.load(file_name).to(device)
-  X_trn = X_trn.reshape(X_trn.shape[0], -1).float() / 255
-  dataset = data.TensorDataset(X_trn, X_trn)
-  batches = data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+  N = len(batches.dataset)
+  loss = 0
 
-  return (X_trn, X_trn.shape, batches)
+  with T.no_grad():
+    for (X, Y) in batches:
+      Y_prd, batch_loss = model(X, Y)
+      loss += batch_loss
 
-# python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 ../mnist/train-images-idx3-ubyte.T
+  print "Average Test Loss: %g" % (loss/N)
+
+def get_batches(X, Y):
+  return data.DataLoader(data.TensorDataset(X, Y), batch_size=batch_size,
+    shuffle=shuffle)
+
+def data(file_name, device):
+  X = (T.load(file_name).float()/255).to(device)
+  N = X.shape[0]
+
+  return (X, X.reshape(N, -1), X.shape[1], X.shape[2], np.prod(X.shape[1:]))
+
+# python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
 
@@ -67,14 +74,15 @@ if __name__ == "__main__":
 
   device = T.device("cpu" if args.no_cuda else "cuda")
 
-  X_trn, shape, batches = get_batches(args.data, args.batch_size, args.shuffle,
-    device)
-
-  N = shape[0]
-  D = np.prod(shape[1:])
+  X_trn, Xf_trn, height, width, D_in = data(args.train, device)
 
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
-  ae = models.AE3(D, D).to(device)
+  # ae = models.AE3(D, D).to(device)
+  ae = models.AE4(D_in).to(device)
 
-  train(ae, args.num_epochs, batches, N)
+  train(ae, get_batches(Xf_trn, Xf_trn), args.num_epochs)
+
+  if args.test:
+    X_tst, Xf_tst, _, _, _ = data(args.test, device)
+    test(ae, get_batches(Xf_tst Xf_tst))

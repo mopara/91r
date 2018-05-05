@@ -44,8 +44,8 @@ shortcuts:
 workflow:
 - server: source 91r/src/91r.sh
 - server: v2
-- edit files locally
+- local: edit scripts
 - local: push
 - server: pull
-- inspect updated files with ranger to make sure it updated correctly
-- run files on server
+- server: inspect updated scripts with ranger to make sure it updated correctly
+- server: run scripts

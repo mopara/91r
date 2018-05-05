@@ -131,3 +131,8 @@ cuda:
 - only need to add .to() to two places
   - https://discuss.pytorch.org/t/automatically-move-everything-to-gpu-without-calling-cuda/1818/3
   - consistent with pytorch_vae tutorial
+
+youtube:
+- https://www.youtube.com/watch?v=9zKuYvjFFS8&t=1s
+- https://www.youtube.com/watch?v=5WoItGTWV54&t=3002s
+- https://www.youtube.com/watch?v=uaaqyVS9-rM&t=1561s
