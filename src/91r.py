@@ -66,7 +66,7 @@ def data(file_name, device):
 
   return (X, X.reshape(N, -1), X.shape[1], X.shape[2], np.prod(X.shape[1:]))
 
-# python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
+# python 91r.py --batch-size=256 --shuffle --num-epochs=100 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
 
@@ -85,4 +85,5 @@ if __name__ == "__main__":
 
   if args.test:
     X_tst, Xf_tst, _, _, _ = data(args.test, device)
-    test(ae, get_batches(Xf_tst Xf_tst))
+
+    test(ae, get_batches(Xf_tst, Xf_tst))
