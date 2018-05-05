@@ -4,6 +4,8 @@ import numpy as np
 import torch as T
 import torch.utils.data as data
 
+import torch.nn.functional as F
+
 def parse_args():
   parser = argparse.ArgumentParser()
 
@@ -34,8 +36,18 @@ def train(model, batches, num_epochs):
   for epoch in xrange(num_epochs):
     loss = 0
 
+    loss1 = 0
+    loss2 = 0
+
     for (X, Y) in batches:
       Y_prd, batch_loss = model(X, Y)
+
+      batch_l1 = F.binary_cross_entropy(Y_prd, Y) * X.size(0)
+      batch_l2 = F.binary_cross_entropy(Y_prd, Y).mean(dim=1).sum()
+
+      loss1 += batch_l1
+      loss2 += batch_l2
+
       loss += batch_loss * X.size(0)
 
       model.opt.zero_grad()
@@ -43,6 +55,7 @@ def train(model, batches, num_epochs):
       model.opt.step()
 
     print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
+    print loss1, loss2
 
 def test(model, batches):
   model.eval()
