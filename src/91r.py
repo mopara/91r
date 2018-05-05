@@ -41,7 +41,7 @@ def train(model, batches, num_epochs):
       loss += batch_loss
 
       model.opt.zero_grad()
-      # keras example optimizes wrt the average not the sum for some reason
+      # keras example optimizes wrt the average not the sum--not sure why
       (batch_loss/X.size(0)).backward()
       # batch_loss.backward()
       model.opt.step()
