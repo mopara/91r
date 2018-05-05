@@ -5,7 +5,7 @@ ra_login history:
 - conda install mkl cudnn -c anaconda
 - conda install pytorch=0.4.0 torchvision -c pytorch
 - pip install opencv-python (conda version doesnt do video i/o: https://github.com/ContinuumIO/anaconda-issues/issues/121)
-- pip install ranger-fm
+- pip install ranger-fm (should be conda install)
 
 git:
 > http://kbroman.org/github_tutorial/pages/init.html
@@ -40,3 +40,11 @@ shortcuts:
 - pull code from github
   > git pull origin master
   - pull
+
+workflow:
+- server: source 91r/src/91r.sh
+- server: v2
+- edit files locally
+- local: push
+- server: pull
+- run files on server
