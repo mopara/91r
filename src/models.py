@@ -122,3 +122,30 @@ class AE4(nn.Module):
     act_loss = 0
 
     return (Y_prd, loss+kernel_loss+act_loss)
+
+class AE5(nn.Module):
+  def __init__(self, D_in, H, D_out):
+    super(AE5, self).__init__()
+
+    self.enc = enc = nn.Sequential(
+      nn.Linear(D_in, H),
+      nn.ReLU()
+    )
+
+    self.dec = dec = nn.Sequential(
+      nn.Linear(H, D_out),
+      nn.Sigmoid()
+    )
+
+    self.ae = ae = nn.Sequential(
+      enc,
+      dec
+    )
+
+    self.opt = optim.Adadelta(ae.parameters())
+
+  def forward(self, X, Y):
+    Y_prd = self.ae(X)
+    loss = F.binary_cross_entropy(Y_prd, Y)
+
+    return (Y_prd, loss)
