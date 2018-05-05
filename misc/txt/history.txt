@@ -42,6 +42,7 @@ shortcuts:
   - pull
 
 workflow:
+- local: ra
 - server: source 91r/src/91r.sh
 - server: v2
 - local: edit scripts

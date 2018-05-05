@@ -41,7 +41,9 @@ def train(model, batches, num_epochs):
       loss += batch_loss
 
       model.opt.zero_grad()
-      (batch_loss/X.size(0)).backward() # optimize wrt the average not the sum
+      # keras example optimizes wrt the average not the sum for some reason
+      (batch_loss/X.size(0)).backward()
+      # batch_loss.backward()
       model.opt.step()
 
     print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
@@ -69,7 +71,7 @@ def get_data(file_name, device):
 
   return (X, X.reshape(N, -1), X.shape[1], X.shape[2], np.prod(X.shape[1:]))
 
-# python 91r.py -s -c -b256 -n100 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
+# python 91r/src/91r.py -s -c -b256 -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
 
@@ -83,8 +85,8 @@ if __name__ == "__main__":
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)
-  # ae = models.AE4(D_in).to(device)
-  ae = models.AE5(D_in, 32, D_in).to(device)
+  ae = models.AE4(D_in).to(device)
+  # ae = models.AE5(D_in, 32, D_in).to(device)
 
   train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
     args.num_epochs)

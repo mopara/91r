@@ -114,14 +114,12 @@ class AE4(nn.Module):
   def forward(self, X, Y):
     Y_prd = self.ae(X)
 
+    # interpretation:
     # let l(y_prd, y) be the average bce(y_prd[i], y[i])
     # sum l(y_prd, y) over observation (y_prd, y) in the batch (Y_prd, Y)
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
 
-    kernel_loss = 0
-    act_loss = 0
-
-    return (Y_prd, loss+kernel_loss+act_loss)
+    return (Y_prd, loss)
 
 class AE5(nn.Module):
   def __init__(self, D_in, H, D_out):
