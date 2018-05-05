@@ -49,8 +49,8 @@ def train(model, num_epochs, batches):
 
     print fmt % args
 
-def get_batches(file_name, batch_size, shuffle):
-  X_trn = T.load(file_name)
+def get_batches(file_name, batch_size, shuffle, device):
+  X_trn = T.load(file_name).to(device)
   shape = X_trn.shape
   X_trn = X_trn.reshape(shape[0], -1).float() / 255
   dataset = data.TensorDataset(X_trn, X_trn)
@@ -60,6 +60,8 @@ def get_batches(file_name, batch_size, shuffle):
 
 # python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 ../mnist/train-images-idx3-ubyte
 if __name__ == "__main__":
+  print "cuda", T.cuda.is_available()
+
   args = parse_args()
 
   T.manual_seed(args.seed)
@@ -67,9 +69,9 @@ if __name__ == "__main__":
   device = T.device("cpu" if args.no_cuda else "cuda")
 
   X_trn, (_, height, width), batches = get_batches(args.data, args.batch_size,
-    args.shuffle)
+    args.shuffle, device)
 
-  ae = models.AE1(height*width, 32, height*width)
+  ae = models.AE1(height*width, 32, height*width).to(device)
 
   train(ae, args.num_epochs, batches)
 
