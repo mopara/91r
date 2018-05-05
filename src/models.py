@@ -140,7 +140,8 @@ class AE5(nn.Module):
       dec
     )
 
-    self.opt = optim.Adadelta(ae.parameters())
+    # rho and eps from keras
+    self.opt = optim.Adadelta(ae.parameters(), rho=0.95, eps=1e-7)
 
   def forward(self, X, Y):
     Y_prd = self.ae(X)
