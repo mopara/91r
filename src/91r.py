@@ -34,7 +34,7 @@ def train(model, num_epochs, batches, N):
 
       Y_prd = model(X)
 
-      # optimize batch_opt_loss but print batch_loss
+      # ae2: optimize batch_opt_loss but print batch_loss
       batch_opt_loss, batch_loss = model.loss(Y_prd, Y)
       epoch_loss += batch_loss * batch_size
 

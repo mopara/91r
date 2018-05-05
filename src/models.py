@@ -57,9 +57,9 @@ class AE2(nn.Module):
 
   def loss(self, Y_prd, Y):
     l1 = self.l1 * Y_prd.abs().sum()
-    L = F.binary_cross_entropy(Y_prd, Y, reduce=False)
+    L = F.binary_cross_entropy(Y_prd, Y)
 
-    return l1 + L.mean()
+    return (l1 + L, L)
 
   def forward(self, X):
     return self.ae(X)
