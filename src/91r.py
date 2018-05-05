@@ -20,6 +20,8 @@ def parse_args():
     help="shuffle training data (default: false")
   parser.add_argument("--num-epochs", default=10, type=int,
     help="number of epochs to train (default: 10)", metavar="E")
+  parser.add_argument("--l1", default=1e-4, type=float,
+    help="L1 regularization coefficient (default: 1e-4)", metavar="L1")
 
   return parser.parse_args()
 
@@ -82,6 +84,6 @@ if __name__ == "__main__":
   D = np.prod(shape[1:])
 
   # ae1 = models.AE1(D, 32, D).to(device)
-  ae2 = models.AE2(D, 32, D, 1e-4).to(device)
+  ae2 = models.AE2(D, 32, D, args.l1).to(device)
 
   train(ae2, args.num_epochs, batches, N)
