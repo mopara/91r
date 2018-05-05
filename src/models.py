@@ -35,7 +35,7 @@ class AE1(nn.Module):
 
 class AE2(nn.Module):
   def __init__(self, D_in, H, D_out, l1):
-    super(AE2, self).__init__()
+    super(AE1, self).__init__()
 
     self.enc = enc = nn.Sequential(
       nn.Linear(D_in, H),
@@ -55,11 +55,12 @@ class AE2(nn.Module):
     self.opt = optim.Adadelta(ae.parameters())
     self.l1 = l1
 
-  def loss(self, Y_prd, Y):
-    l1 = self.l1 * Y_prd.abs().sum()
+  def loss(self, Y_prd, Y, Z):
     L = F.binary_cross_entropy(Y_prd, Y)
+    # call mean() bc it'll eventually by multiplied by batch_size
+    L1 = self.l1 * Z.norm(p=1, dim=1).mean()
 
-    return (l1 + L, L)
+    return L + L1
 
   def forward(self, X):
     return self.ae(X)

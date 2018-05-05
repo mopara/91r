@@ -34,18 +34,9 @@ def train(model, num_epochs, batches, N):
     for (X, Y) in batches:
       batch_size = X.shape[0]
 
-      Y_prd = model(X)
+      Y_prd, Z = model(X)
 
-      # ae2: optimize batch_opt_loss but print batch_loss
-      batch_opt_loss, batch_loss = model.loss(Y_prd, Y)
-      epoch_loss += batch_loss * batch_size
-
-      model.opt.zero_grad()
-      batch_opt_loss.backward()
-      model.opt.step()
-
-      """
-      batch_loss = model.loss(Y_prd, Y)
+      batch_loss = model.loss(Y_prd, Y, Z)
       # batch_loss is the average loss per observation in a batch
       # batch_loss * batch_size will be the total loss over the observations in the batch
       epoch_loss += batch_loss * batch_size
@@ -54,7 +45,6 @@ def train(model, num_epochs, batches, N):
       model.opt.zero_grad()
       batch_loss.backward()
       model.opt.step()
-      """
 
     fmt = "Epoch: %03d\tLoss: %g"
     args = (epoch, epoch_loss/N)
@@ -82,6 +72,8 @@ if __name__ == "__main__":
 
   N = shape[0]
   D = np.prod(shape[1:])
+
+  print args.l1
 
   # ae1 = models.AE1(D, 32, D).to(device)
   ae2 = models.AE2(D, 32, D, args.l1).to(device)
