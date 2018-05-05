@@ -82,7 +82,7 @@ class AE3(nn.Module):
     self.ae = ae = nn.Sequential(enc, dec)
     self.opt = optim.Adadelta(ae.parameters())
 
-  def loss(self, Y_prd, Y, Z)
+  def loss(self, Y_prd, Y, Z):
     return F.binary_cross_entropy(Y_prd, Y)
 
   def forward(self, X):
