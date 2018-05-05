@@ -49,7 +49,7 @@ def train(model, batches, num_epochs):
       loss2 += batch_l2
 
       # loss += batch_loss * X.size(0)
-      loss += batch_loss
+      loss += batch_l2
 
       model.opt.zero_grad()
       batch_loss.backward()
