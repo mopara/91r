@@ -47,4 +47,5 @@ workflow:
 - edit files locally
 - local: push
 - server: pull
+- inspect updated files with ranger to make sure it updated correctly
 - run files on server

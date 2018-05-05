@@ -55,8 +55,8 @@ class AE2(nn.Module):
     self.opt = optim.Adadelta(ae.parameters())
     self.l1 = l1
 
-  def loss(self, y_prd, y):
-    l1 = self.l1 * y_prd.abs().sum()
+  def loss(self, Y_prd, Y):
+    l1 = self.l1 * Y_prd.abs().sum()
     L = F.binary_cross_entropy(Y_prd, Y, reduce=False)
 
     return l1 + L.mean()
