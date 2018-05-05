@@ -18,10 +18,10 @@ def parse_args():
     help="input batch size for training (default: 128)", metavar="N")
   parser.add_argument("--shuffle", action="store_true", default=False,
     help="shuffle training data (default: false")
-  parser.add_argument("--num-epochs", default=10, type=int,
-    help="number of epochs to train (default: 10)", metavar="E")
   parser.add_argument("--l1", default=1e-4, type=float,
     help="L1 regularization coefficient (default: 1e-4)", metavar="L1")
+  parser.add_argument("--num-epochs", default=10, type=int,
+    help="number of epochs to train (default: 10)", metavar="E")
 
   return parser.parse_args()
 
