@@ -19,10 +19,10 @@ def parse_args():
     help="number of epochs to train (default: 10)", metavar="E")
   parser.add_argument("--l1", default=0, type=float,
     help="L1 regularization coefficient (default: 0)", metavar="L1")
-  parser.add_argument("-i", "--test", type=str, help="testing dataset",
+  parser.add_argument("-j", "--test", type=str, help="set testing dataset",
     metavar="X")
-  parser.add_argument("-j", "--train", type=str, required=True,
-    help="training dataset", metavar="X")
+  parser.add_argument("-i", "--train", type=str, required=True,
+    help="set training dataset", metavar="X")
 
   return parser.parse_args()
 
@@ -67,7 +67,7 @@ def data(file_name, device):
 
   return (X, X.reshape(N, -1), X.shape[1], X.shape[2], np.prod(X.shape[1:]))
 
-# python 91r.py --batch-size=256 --shuffle --num-epochs=100 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
+# python 91r.py -s -c -b256 -n100 --train=../mnist/train-images-idx3-ubyte.T --test=../mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
 
