@@ -43,7 +43,7 @@ def train(model, batches, num_epochs):
       Y_prd, batch_loss = model(X, Y)
 
       batch_l1 = F.binary_cross_entropy(Y_prd, Y) * X.size(0)
-      batch_l2 = F.binary_cross_entropy(Y_prd, Y).mean(dim=1).sum()
+      batch_l2 = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
 
       loss1 += batch_l1
       loss2 += batch_l2
