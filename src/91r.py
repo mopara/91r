@@ -34,6 +34,15 @@ def train(model, num_epochs, batches, N):
 
       Y_prd = model(X)
 
+      # optimize batch_opt_loss but print batch_loss
+      batch_opt_loss, batch_loss = model.loss(Y_prd, Y)
+      epoch_loss += batch_loss * batch_size
+
+      model.opt.zero_grad()
+      batch_opt_loss.backward()
+      model.opt.step()
+
+      """
       batch_loss = model.loss(Y_prd, Y)
       # batch_loss is the average loss per observation in a batch
       # batch_loss * batch_size will be the total loss over the observations in the batch
@@ -43,6 +52,7 @@ def train(model, num_epochs, batches, N):
       model.opt.zero_grad()
       batch_loss.backward()
       model.opt.step()
+      """
 
     fmt = "Epoch: %03d\tLoss: %g"
     args = (epoch, epoch_loss/N)
