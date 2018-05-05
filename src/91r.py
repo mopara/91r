@@ -72,7 +72,7 @@ if __name__ == "__main__":
   args = parse_args()
 
   if not args.random:
-    T.manual_seed(args.seed)
+    T.manual_seed(1)
 
   device = T.device("cuda" if args.cuda else "cpu")
 
