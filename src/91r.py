@@ -23,7 +23,7 @@ def parse_args():
 
   return parser.parse_args()
 
-def train(model, num_epochs, batches):
+def train(model, num_epochs, batches, N):
   model.train()
 
   for epoch in xrange(num_epochs):
@@ -45,7 +45,7 @@ def train(model, num_epochs, batches):
       model.opt.step()
 
     fmt = "Epoch: %03d\tLoss: %g"
-    args = (epoch, epoch_loss)
+    args = (epoch, epoch_loss/N)
 
     print fmt % args
 
@@ -58,7 +58,7 @@ def get_batches(file_name, batch_size, shuffle, device):
 
   return (X_trn, shape, batches)
 
-# python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 ../mnist/train-images-idx3-ubyte
+# python 91r.py --no-cuda --batch-size=256 --shuffle --num-epochs=50 ../mnist/train-images-idx3-ubyte.T
 if __name__ == "__main__":
   print "cuda", T.cuda.is_available()
 
@@ -73,6 +73,6 @@ if __name__ == "__main__":
 
   ae = models.AE1(height*width, 32, height*width).to(device)
 
-  train(ae, args.num_epochs, batches)
+  train(ae, args.num_epochs, batches, X_trn.shape[0])
 
   print X_trn.shape
