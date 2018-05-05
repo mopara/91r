@@ -1,3 +1,4 @@
+import itertools as it
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -47,7 +48,7 @@ class AE2(nn.Module):
       nn.Sigmoid()
     )
 
-    self.opt = optim.Adadelta(ae.parameters())
+    self.opt = optim.Adadelta(it.chain(enc.parameters(), dec.parameters()))
     self.l1 = l1
 
   def loss(self, Y_prd, Y, Z):
