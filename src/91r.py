@@ -36,17 +36,17 @@ def train(model, batches, num_epochs):
   for epoch in xrange(num_epochs):
     loss = 0
 
-    # loss1 = 0
-    # loss2 = 0
+    loss1 = 0
+    loss2 = 0
 
     for (X, Y) in batches:
       Y_prd, batch_loss = model(X, Y)
 
-      # batch_l1 = F.binary_cross_entropy(Y_prd, Y) * X.size(0)
-      # batch_l2 = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
+      batch_l1 = F.binary_cross_entropy(Y_prd, Y) * X.size(0)
+      batch_l2 = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
 
-      # loss1 += batch_l1
-      # loss2 += batch_l2
+      loss1 += batch_l1
+      loss2 += batch_l2
 
       # loss += batch_loss * X.size(0)
       loss += batch_loss
@@ -56,7 +56,7 @@ def train(model, batches, num_epochs):
       model.opt.step()
 
     print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
-    # print loss1, loss2
+    print loss1, loss2
 
 def test(model, batches):
   model.eval()
