@@ -57,7 +57,7 @@ def train(model, batches, num_epochs):
       model.opt.step()
 
     print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
-    print loss1, loss2
+    print loss, loss1, loss2
 
 def test(model, batches):
   model.eval()
