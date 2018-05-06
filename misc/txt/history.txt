@@ -15,6 +15,10 @@ git:
   - set up ssh stuff as specified if haven't done it already
     basically add ~/.ssh/id_rsa.pub to github account's ssh keys
 > https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
+> https://stackoverflow.com/a/49969162
+  - how to track and untrack files
+> https://stackoverflow.com/a/15606995
+  - how to list tracked files
 - create .gitignore
   - see current .gitignore
 - git init (91r directory)
