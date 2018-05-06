@@ -52,7 +52,6 @@ test_loader = torch.utils.data.DataLoader(
     batch_size=args.batch_size, shuffle=True, **kwargs)
 ###############################################################################
 
-
 class VAE(nn.Module):
     def __init__(self):
         super(VAE, self).__init__()
@@ -122,6 +121,9 @@ def train(epoch):
     print('====> Epoch: {} Average loss: {:.4f}'.format(
           epoch, train_loss / len(train_loader.dataset)))
 
+###############################################################################
+results = "/home/ra_login/91r/src/ex/results/"
+###############################################################################
 
 def test(epoch):
     model.eval()
@@ -135,8 +137,12 @@ def test(epoch):
                 n = min(data.size(0), 8)
                 comparison = torch.cat([data[:n],
                                       recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
+                # save_image(comparison.cpu(),
+                #          'results/reconstruction_' + str(epoch) + '.png', nrow=n)
+###############################################################################
                 save_image(comparison.cpu(),
-                         'results/reconstruction_' + str(epoch) + '.png', nrow=n)
+                    results + 'reconstruction_' + str(epoch) + '.png', nrow=n)
+###############################################################################
 
     test_loss /= len(test_loader.dataset)
     print('====> Test set loss: {:.4f}'.format(test_loss))
@@ -148,5 +154,9 @@ for epoch in range(1, args.epochs + 1):
     with torch.no_grad():
         sample = torch.randn(64, 20).to(device)
         sample = model.decode(sample).cpu()
+        # save_image(sample.view(64, 1, 28, 28),
+        #            'results/sample_' + str(epoch) + '.png')
+###############################################################################
         save_image(sample.view(64, 1, 28, 28),
-                   'results/sample_' + str(epoch) + '.png')
+            results + 'sample_' + str(epoch) + '.png')
+###############################################################################
