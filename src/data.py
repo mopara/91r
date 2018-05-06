@@ -24,7 +24,7 @@ def save(dst_dir, file_name, arr):
   np.save(file_name, arr)
   T.save(T.tensor(arr), file_name+".T")
 
-  print "saved %s\tshape: %s" % (file_name, arr.shape)
+  print "%s\tshape: %s" % (file_name, arr.shape)
 
 def mnist(file_names, dst_dir):
   for file_name in file_names:

@@ -44,7 +44,7 @@ def parse_args():
 
 #   model.compile(optimizer='adadelta', loss='binary_crossentropy')
 
-  return model
+  # return model
 
 def AE():
   enc = KM.Sequential()

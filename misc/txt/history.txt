@@ -56,5 +56,9 @@ workflow:
 - server: inspect updated scripts with ranger to make sure it updated correctly
 - server: run scripts
 
-ssh:
+keep ssh open:
 - local: https://www.howtogeek.com/howto/linux/keep-your-linux-ssh-session-from-disconnecting/
+
+data:
+- server: python src/data.py mnist -i mnist/src/*-ubyte -o mnist/
+- server: python src/data.py vids -i vids/src/a4.sax.mov -o vids/
