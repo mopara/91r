@@ -21,14 +21,14 @@ function mlrun {
   logfile=src/log/"$(date '+20%y-%m-%d-%H-%M-%S')-$1.txt"
   cat src/"$1".py > "$logfile"
   echo "[EOF]" >> "$logfile"
-  python src/"$1".py -s -b256 -n "$2" -i mnist/train-images-idx3-ubyte."$3" -j mnist/t10k-images-idx3-ubyte."$3" | tee -a "$logfile"
+  python src/"$1".py -s -b "$2" -n "$3" -i mnist/train-images-idx3-ubyte."$4" -j mnist/t10k-images-idx3-ubyte."$4" | tee -a "$logfile"
   popd
 }
 
 function keras_ae {
-  mlrun keras_ae "$1" npy
+  mlrun keras_ae 256 "$1" npy
 }
 
 function 91r {
-  mlrun 91r "$1" T
+  mlrun 91r 128 "$1" T
 }

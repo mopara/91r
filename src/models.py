@@ -184,7 +184,39 @@ class AE6(nn.Module):
 
   def forward(self, X, Y):
     Y_prd = self.ae(X)
-    # as before sum over the bce loss of each observation
+    # as before sum over the bce loss of each observation; review bc pytorch
+    # cant take means (or sums for that matter) over multiple axes
+    loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).view(Y.size(0), -1
+      ).mean(dim=1).sum()
+
+    return (Y_prd, loss)
+
+class AE7(nn.Module):
+  def __init__(self, C):
+    super(AE6, self).__init__()
+
+    # P' = (F-1)/2 = (3-1)/2 = 1 where P' yields X->Y of the same shape
+    self.enc = enc = nn.Sequential(
+      nn.Conv2d(C, 32, 3, padding=1),
+      nn.ReLU(),
+      nn.MaxPool2d(2, padding=0), # 28 -> 14
+      nn.Conv2d(32, 32, 3, padding=1),
+      nn.ReLU(),
+      nn.MaxPool2d(2, padding=0)) # 14 -> 7
+    self.dec = dec = nn.Sequential(
+      nn.Conv2d(32, 32, 3, padding=1),
+      nn.ReLU(),
+      nn.Upsample(scale_factor=2, mode="nearest"), # 7 -> 14
+      nn.Conv2d(32, 32, 3, padding=1),
+      nn.ReLU(),
+      nn.Upsample(scale_factor=2, mode="nearest"), # 14 -> 28
+      nn.Conv2d(32, 1, 3, padding=1),
+      nn.Sigmoid())
+    self.ae = ae = nn.Sequential(enc, dec)
+    self.opt = optim.Adadelta(ae.parameters(), rho=0.95, eps=1e-7)
+
+  def forward(self, X, Y):
+    Y_prd = self.ae(X)
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).view(Y.size(0), -1
       ).mean(dim=1).sum()
 

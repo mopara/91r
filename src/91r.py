@@ -78,6 +78,7 @@ def get_data(file_name, device):
     X.unsqueeze_(3)
 
   Xf = X.reshape(X.size(0), -1)
+  # X.permute(A).shape[i] = X.shape[A[i]]
   Xc = X.permute(0,3,1,2) # NHWC -> NCHW
 
   return (X, Xf, Xc)
@@ -101,7 +102,8 @@ if __name__ == "__main__":
   # ae = models.AE3(D, D).to(device)
   # ae = models.AE4(D).to(device)
   # ae = models.AE5(D, 32, D).to(device)
-  ae = models.AE6(C).to(device)
+  # ae = models.AE6(C).to(device)
+  ae = models.AE7(C).to(device)
 
   train(ae, get_batches(Xc_trn, Xc_trn, args.batch_size, args.shuffle),
     args.num_epochs)
