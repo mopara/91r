@@ -30,22 +30,6 @@ def parse_args():
 
   return parser.parse_args()
 
-# def AE():
-#   input_img = Input(shape=(784,))
-#   encoded = Dense(128, activation='relu')(input_img)
-#   encoded = Dense(64, activation='relu')(encoded)
-#   encoded = Dense(32, activation='relu')(encoded)
-
-#   decoded = Dense(64, activation='relu')(encoded)
-#   decoded = Dense(128, activation='relu')(decoded)
-#   decoded = Dense(784, activation='sigmoid')(decoded)
-
-#   model = Model(input_img, decoded)
-
-#   model.compile(optimizer='adadelta', loss='binary_crossentropy')
-
-  # return model
-
 def AE(D_in, D_out):
   enc = KM.Sequential()
   dec = KM.Sequential()
