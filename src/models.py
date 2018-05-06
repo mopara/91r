@@ -20,7 +20,7 @@ class VAE(nn.Module):
   def encode(self, x):
     h = self.pre(x)
 
-    return (mu_fc(h), log_sigma_fc(h))
+    return (self.mu_fc(h), self.log_sigma_fc(h))
 
   def sample(self, mu, log_sigma):
     if self.training:
