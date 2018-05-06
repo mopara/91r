@@ -21,7 +21,7 @@ function mlrun {
   # logfile=src/log/"$(date '+20%y-%m-%d-%H-%M-%S')-$1.txt"
   # cat src/"$1".py > "$logfile"
   # echo "[EOF]" >> "$logfile"
-  python -u src/"$1".py -s -b "$2" -n "$3" -i mnist/train-images-idx3-ubyte."$4" -j mnist/t10k-images-idx3-ubyte."$4" # | tee -a "$logfile"
+  python -u src/"$1".py -s -c -b "$2" -n "$3" -i mnist/train-images-idx3-ubyte."$4" -j mnist/t10k-images-idx3-ubyte."$4" # | tee -a "$logfile"
   popd
 }
 
