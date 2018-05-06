@@ -38,9 +38,7 @@ def train(model, batches, num_epochs):
     begin = time.time()
     loss = 0
 
-    for (i, (X, Y)) in enumerate(batches):
-      print i
-
+    for (X, Y) in batches:
       batch_size = X.size(0)
 
       Y_prd, batch_loss = model(X, Y)
@@ -88,8 +86,6 @@ def get_data(file_name, device):
 # python 91r/src/91r.py -s -c -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
-
-  print args
 
   if not args.random:
     T.manual_seed(1)
