@@ -36,8 +36,6 @@ class VAE(nn.Module):
     mu, log_sigma = self.encode(x)
     y_prd = self.decode(self.sample(mu, log_sigma))
 
-    print y.shape, y_prd.shape
-
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
     kld = -0.5*(1+log_sigma).sub_(mu.pow(2)).sub_(log_sigma.exp()).sum()
 
