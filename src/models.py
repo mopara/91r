@@ -173,10 +173,10 @@ class AE6(nn.Module):
       nn.Upsample(scale_factor=2, mode="nearest"), # 4 -> 8
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest"), # 8 - 16
+      nn.Upsample(scale_factor=2, mode="nearest"), # 8 -> 16
       nn.Conv2d(8, 16, 3), # N + F - 1 = 16 + 3 - 1 -> 14
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest"), # 14 - 28
+      nn.Upsample(scale_factor=2, mode="nearest"), # 14 -> 28
       nn.Conv2d(16, 1, 3, padding=1),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)
@@ -191,6 +191,7 @@ class AE6(nn.Module):
 
     return (Y_prd, loss)
 
+# denoising; didnt test
 class AE7(nn.Module):
   def __init__(self, C):
     super(AE6, self).__init__()
@@ -221,3 +222,7 @@ class AE7(nn.Module):
       ).mean(dim=1).sum()
 
     return (Y_prd, loss)
+
+class AE8(nn.Module):
+  def __init__(self):
+    pass
