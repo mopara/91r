@@ -100,7 +100,7 @@ if __name__ == "__main__":
   # ae = models.AE3(D, D).to(device)
   # ae = models.AE4k(D).to(device)
   # ae = models.AE5(D, 32, D).to(device)
-  ae = models.AE6(C)
+  ae = models.AE6(C).to(device)
 
   train(ae, get_batches(Xc_trn, Xc_trn, args.batch_size, args.shuffle),
     args.num_epochs)
