@@ -53,7 +53,7 @@ def test(model, batches):
   with t.no_grad():
     loss = sum(model(x, y)[1] for (x, y) in batches)
 
-  print "Average Test Loss: %g" % loss/len(batches.dataset)
+  print "Average Test Loss: %g" % (loss/len(batches.dataset))
 
 def get_data(file_name, device):
   x = t.load(file_name).to(device).float().div_(255)
