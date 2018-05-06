@@ -26,9 +26,9 @@ function mlrun {
 }
 
 function keras_ae {
-  mlrun keras_ae "$1" T
+  mlrun keras_ae "$1" npy
 }
 
 function 91r {
-  mlrun 91r "$1" npy
+  mlrun 91r "$1" T
 }
