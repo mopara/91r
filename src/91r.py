@@ -38,7 +38,9 @@ def train(model, batches, num_epochs):
     begin = time.time()
     loss = 0
 
-    for (X, Y) in batches:
+    for (i, (X, Y)) in enumerate(batches):
+      print i
+
       batch_size = X.size(0)
 
       Y_prd, batch_loss = model(X, Y)
