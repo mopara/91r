@@ -8,12 +8,16 @@ class VAE(nn.Module):
   def __init__(self, D_in, D_hidden, D_latent):
     super(VAE, self).__init__()
 
-    self.pre = pre = nn.Linear(D_in, D_hidden)
+    self.pre = pre = nn.Sequential(
+      nn.Linear(D_in, D_hidden),
+      nn.ReLU())
     self.mu_fc = mu_fc = nn.Linear(D_hidden, D_latent)
     self.log_sigma_fc = log_sigma_fc = nn.Linear(D_hidden, D_latent)
     self.decode = decode = nn.Sequential(
       nn.Linear(D_latent, D_hidden),
-      nn.Linear(D_hidden, D_in))
+      nn.ReLU(),
+      nn.Linear(D_hidden, D_in),
+      nn.Sigmoid())
     self.opt = optim.Adam(it.chain(pre.parameters(), mu_fc.parameters(),
       log_sigma_fc.parameters(), decode.parameters()), lr=1e-3)
 
