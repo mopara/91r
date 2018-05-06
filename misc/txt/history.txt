@@ -1,11 +1,12 @@
 ra_login history:
 - conda create -n 91r python=2
 - source activate 91r
-- conda install numpy scipy matplotlib scikit-learn keras tensorflow
+- conda install numpy scipy matplotlib scikit-learn ranger-fm keras tensorflow
+  - couldnt get tensorflow-gpu to work
 - conda install mkl cudnn -c anaconda
 - conda install pytorch=0.4.0 torchvision -c pytorch
-- pip install opencv-python (conda version doesnt do video i/o: https://github.com/ContinuumIO/anaconda-issues/issues/121)
-- pip install ranger-fm (should be conda install)
+- pip install opencv-python
+  - conda version doesnt do video i/o: https://github.com/ContinuumIO/anaconda-issues/issues/121
 
 git:
 > http://kbroman.org/github_tutorial/pages/init.html
@@ -15,7 +16,7 @@ git:
     basically add ~/.ssh/id_rsa.pub to github account's ssh keys
 > https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
 - create .gitignore
-  - see current file
+  - see current .gitignore
 - git init (91r directory)
 - git config user.email 'opara@college.harvard.edu' (check with cat .git/config)
 - git config user.name 'Michael Opara'
