@@ -93,8 +93,6 @@ if __name__ == "__main__":
   N, H, W, C = X_trn.size()
   D = H * W * C
 
-  print Xc_trn.shape
-
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)

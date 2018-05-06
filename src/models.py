@@ -182,9 +182,7 @@ class AE6(nn.Module):
     self.opt = optim.Adadelta(ae.parameters(), rho=0.95, eps=1e-7)
 
   def forward(self, X, Y):
-    Y_prd = self.enc(X)
-    Y_prd = self.dec(Y_prd)
-    # Y_prd = self.ae(X)
+    Y_prd = self.ae(X)
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
 
     return (Y_prd, loss)
