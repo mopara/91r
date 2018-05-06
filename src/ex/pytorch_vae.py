@@ -39,6 +39,7 @@ device = torch.device("cuda" if args.cuda else "cpu")
 #     datasets.MNIST('../data', train=False, transform=transforms.ToTensor()),
 #     batch_size=args.batch_size, shuffle=True, **kwargs)
 
+###############################################################################
 data_dir = "/home/ra_login/91r/src/ex/data"
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
@@ -49,6 +50,7 @@ train_loader = torch.utils.data.DataLoader(
 test_loader = torch.utils.data.DataLoader(
     datasets.MNIST(data_dir, train=False, transform=transforms.ToTensor()),
     batch_size=args.batch_size, shuffle=True, **kwargs)
+###############################################################################
 
 
 class VAE(nn.Module):
