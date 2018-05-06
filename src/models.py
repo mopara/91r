@@ -153,6 +153,8 @@ class AE5(nn.Module):
 
 class AE6(nn.Module):
   def __init__(self, C):
+    super(AE6, self).__init__()
+
     # P = (F-1)/2 = (3-1)/2 = 1
     self.enc = enc = nn.Sequential(
       nn.Conv2d(C, 16, 3, padding=1),
