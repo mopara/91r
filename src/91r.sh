@@ -2,6 +2,7 @@ alias clr='clear && printf "\e[3J"'
 alias src='echo "reloading /home/91r.sh"; source "/home/91r.sh"'
 
 alias ls='ls --color=auto -a'
+alias ll='ls --lh'
 alias v2='source activate 91r'
 alias d='source deactivate'
 
@@ -15,14 +16,19 @@ function pull {
   popd
 }
 
-function keras_ae {
+function mlrun {
   pushd /home/ra_login/91r
-  python src/keras_ae.py -s -b256 -n100 -i mnist/train-images-idx3-ubyte.npy -j mnist/t10k-images-idx3-ubyte.npy | tee src/log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
+  logfile=src/log/"$(date '+20%y-%m-%d-%H-%M-%S')-$1.txt"
+  cat src/"$1".py > "$logfile"
+  echo "[EOF]" >> "$logfile"
+  python src/"$1".py -s -b256 -n "$2" -i mnist/train-images-idx3-ubyte."$3" -j mnist/t10k-images-idx3-ubyte."$3" | tee -a "$logfile"
   popd
 }
 
+function keras_ae {
+  mlrun keras_ae "$1" T
+}
+
 function 91r {
-  pushd /home/ra_login/91r
-  python src/91r.py -s -c -b128 -n100 -i mnist/train-images-idx3-ubyte.T -j mnist/t10k-images-idx3-ubyte.T | tee src/log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
-  popd
+  mlrun 91r "$1" npy
 }
