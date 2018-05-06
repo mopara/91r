@@ -159,23 +159,24 @@ class AE6(nn.Module):
     self.enc = enc = nn.Sequential(
       nn.Conv2d(C, 16, 3, padding=1),
       nn.ReLU(),
-      nn.MaxPool2d(2, padding=0), # figure out padding? - use pooling layer?
+      nn.MaxPool2d(2, padding=0), # 28 -> 14
       nn.Conv2d(16, 8, 3, padding=1),
       nn.ReLU(),
-      nn.MaxPool2d(2, padding=0),
+      nn.MaxPool2d(2, padding=0), # 14 -> 7
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.MaxPool2d(2, padding=0))
+      nn.ZeroPad2d((0,0,1,1)) # 7 -> 8
+      nn.MaxPool2d(2, padding=0)) # 8 -> 4
     self.dec = dec = nn.Sequential(
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest"),
+      nn.Upsample(scale_factor=2, mode="nearest"), # 4 -> 8
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest"),
-      nn.Conv2d(8, 16, 3, padding=1),
+      nn.Upsample(scale_factor=2, mode="nearest"), # 8 - 16
+      nn.Conv2d(8, 16, 3), # N + F - 1 = 16 + 3 - 1 -> 14
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest"),
+      nn.Upsample(scale_factor=2, mode="nearest"), # 14 - 28
       nn.Conv2d(16, 16, 3, padding=1),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)

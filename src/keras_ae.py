@@ -66,11 +66,11 @@ def AE2(H, W):
 
   dec.add(KN.Conv2D(8, (3, 3), activation="relu", padding="same",
     input_shape=enc.layers[-1].output_shape[1:]))
-  dec.add(KN.UpSampling2D((2, 2)))
+  dec.add(KN.UpSampling2D((2, 2))) # 4 -> 8
   dec.add(KN.Conv2D(8, (3, 3), activation="relu", padding="same"))
-  dec.add(KN.UpSampling2D((2, 2)))
-  dec.add(KN.Conv2D(16, (3, 3), activation="relu"))
-  dec.add(KN.UpSampling2D((2, 2)))
+  dec.add(KN.UpSampling2D((2, 2))) # 8 -> 16
+  dec.add(KN.Conv2D(16, (3, 3), activation="relu")) #  16 + 3 - 1 = 14
+  dec.add(KN.UpSampling2D((2, 2))) # 14 -> 28
   dec.add(KN.Conv2D(1, (3, 3), activation="sigmoid", padding="same"))
 
   ae.add(enc)
