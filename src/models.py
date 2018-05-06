@@ -167,13 +167,13 @@ class AE6(nn.Module):
     self.dec = dec = nn.Sequential(
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(size=2, "nearest"),
+      nn.Upsample(size=2, mode="nearest"),
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(size=2, "nearest"),
+      nn.Upsample(size=2, mode="nearest"),
       nn.Conv2d(8, 16, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(size=2, "nearest"),
+      nn.Upsample(size=2, mode="nearest"),
       nn.Conv2d(16, 16, 3, padding=1),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)
