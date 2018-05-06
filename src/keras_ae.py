@@ -96,5 +96,5 @@ if __name__ == "__main__":
   # ae = AE1(D_in, D_in)
   ae = AE2(H, W)
 
-  ae.fit(Xf_trn, Xf_trn, epochs=args.num_epochs, batch_size=args.batch_size,
+  ae.fit(X_trn, X_trn, epochs=args.num_epochs, batch_size=args.batch_size,
     shuffle=args.shuffle, validation_data=(Xf_tst, Xf_tst))
