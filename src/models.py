@@ -185,6 +185,6 @@ class AE6(nn.Module):
   def forward(self, X, Y):
     Y_prd = self.ae(X)
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).view(Y.size(0), -1
-      ).mean().sum()
+      ).mean(dim=1).sum()
 
     return (Y_prd, loss)

@@ -50,7 +50,6 @@ def train(model, batches, num_epochs):
       (batch_loss/batch_size).backward()
       model.opt.step()
 
-
     print "Epoch: %03d\t - %01.fs - Average Train Loss: %g" % (epoch,
       time.time()-begin, loss/N)
 
