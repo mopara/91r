@@ -72,7 +72,7 @@ def get_data(file_name, device):
 
   # 1-channel
   if len(X.size()) == 3:
-    X.unsqueeze(3)
+    X.unsqueeze_(3)
 
   Xf = X.reshape(X.size(0), -1)
   Xc = X.permute(0,2,3,1) # NHWC -> NCHW
