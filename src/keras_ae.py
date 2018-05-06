@@ -93,6 +93,8 @@ if __name__ == "__main__":
   Xc_trn = X_trn[:,None]
   Xc_tst = X_tst[:,None]
 
+  print Xc_trn.shape
+
   H, W = X_trn.shape[1:]
   D_in = H * W
 
