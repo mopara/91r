@@ -187,7 +187,7 @@ class AE6(nn.Module):
     # as before sum over the bce loss of each observation; review bc pytorch
     # cant take means (or sums for that matter) over multiple axes
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).view(Y.size(0), -1
-      ).mean(dim=1).sum()
+      ).mean().sum()
 
     return (Y_prd, loss)
 
