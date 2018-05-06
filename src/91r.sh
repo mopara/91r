@@ -22,6 +22,6 @@ function keras_ae {
 
 function 91r {
   pushd '/home/ra_login/91r'
-  python src/19r.py -s -c -b128 -n100 -i mnist/train-images-idx3-ubyte.T -j mnist/t10k-images-idx3-ubyte.T
+  python src/91r.py -s -c -b128 -n100 -i mnist/train-images-idx3-ubyte.T -j mnist/t10k-images-idx3-ubyte.T
   popd
 }
