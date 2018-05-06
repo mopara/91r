@@ -30,7 +30,7 @@ def parse_args():
 
   return parser.parse_args()
 
-def AE(D_in, D_out):
+def AE1(D_in, D_out):
   enc = KM.Sequential()
   dec = KM.Sequential()
   ae = KM.Sequential()
@@ -51,6 +51,33 @@ def AE(D_in, D_out):
 
   return ae
 
+def AE2(H, W):
+  enc = KM.Sequential()
+  dec = KM.Sequential()
+  ae = KM.Sequential()
+
+  enc.add(Conv2D(16, (3, 3), activation='relu', padding='same',
+    input_shape=(H, W, 1)))
+  enc.add(MaxPooling2D((2, 2), padding='same'))
+  enc.add(Conv2D(8, (3, 3), activation='relu', padding='same'))
+  enc.add(MaxPooling2D((2, 2), padding='same'))
+  enc.add(Conv2D(8, (3, 3), activation='relu', padding='same'))
+  enc.add(MaxPooling2D((2, 2), padding='same'))
+
+  dec.add(Conv2D(8, (3, 3), activation='relu', padding='same'),
+    input_shape=(4, 4, 4))
+  dec.add(UpSampling2D((2, 2)))
+  dec.add(Conv2D(8, (3, 3), activation='relu', padding='same'))
+  dec.add(UpSampling2D((2, 2)))
+  dec.add(Conv2D(16, (3, 3), activation='relu'))
+  dec.add(UpSampling2D((2, 2)))
+  dec.add(Conv2D(1, (3, 3), activation='sigmoid', padding='same'))
+
+  ae.add(enc)
+  ae.add(dec)
+
+  ae.compile(optimizer="adadelta", loss="binary_crossentropy")
+
 def get_data(file_name):
   X = np.load(file_name).astype(np.float64)/255
 
@@ -63,8 +90,11 @@ if __name__ == "__main__":
   X_trn, Xf_trn = get_data(args.train)
   X_tst, Xf_tst = get_data(args.test)
 
-  D_in = np.prod(X_trn.shape[1:])
+  H, W = X_trn.shape[1:]
+  D_in = H * W
 
-  ae = AE(D_in, D_in)
+  # ae = AE1(D_in, D_in)
+  ae = AE2(H, W)
+
   ae.fit(Xf_trn, Xf_trn, epochs=args.num_epochs, batch_size=args.batch_size,
     shuffle=args.shuffle, validation_data=(Xf_tst, Xf_tst))

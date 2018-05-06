@@ -37,13 +37,15 @@ def train(model, batches, num_epochs):
     loss = 0
 
     for (X, Y) in batches:
+      batch_size = X.size(0)
+
       Y_prd, batch_loss = model(X, Y)
       loss += batch_loss
 
       model.opt.zero_grad()
       # keras example optimizes wrt the average not the sum--not sure why
-      (batch_loss/X.size(0)).backward()
-      # batch_loss.backward()
+      #   maybe bc we wanna update params as if per observation not batch? idk
+      (batch_loss/batch_size).backward()
       model.opt.step()
 
     print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
