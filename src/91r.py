@@ -90,12 +90,15 @@ if __name__ == "__main__":
 
   X_trn, Xf_trn, Xc_trn = get_data(args.train, device)
 
+  N, H, W, C = X_trn.size()
+  D = H * W * C
+
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)
   ae = models.AE4(D).to(device)
   # ae = models.AE5(D, 32, D).to(device)
-  # ae = models.AE6(X_trn.size(3))
+  # ae = models.AE6(C)
 
   train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
     args.num_epochs)
