@@ -2,7 +2,7 @@ alias clr='clear && printf "\e[3J"'
 alias src='echo "reloading /home/91r.sh"; source "/home/91r.sh"'
 
 alias ls='ls --color=auto -a'
-alias ll='ls --lh'
+alias ll='ls -lh'
 alias v2='source activate 91r'
 alias d='source deactivate'
 
