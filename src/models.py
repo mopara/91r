@@ -186,6 +186,7 @@ class AE6(nn.Module):
     Y_prd = self.enc(X)
     print Y_prd.shape
     Y_prd = self.dec(Y_prd)
+    print Y_prd.shape
     # Y_prd = self.ae(X)
     loss = F.binary_cross_entropy(Y_prd, Y, reduce=False).mean(dim=1).sum()
 
