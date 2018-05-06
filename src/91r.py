@@ -1,6 +1,7 @@
 import argparse
 import models
 import numpy as np
+import time
 import torch as T
 import torch.utils.data as data
 
@@ -34,6 +35,7 @@ def train(model, batches, num_epochs):
   N = len(batches.dataset)
 
   for epoch in xrange(num_epochs):
+    begin = time.time()
     loss = 0
 
     for (X, Y) in batches:
@@ -48,7 +50,9 @@ def train(model, batches, num_epochs):
       (batch_loss/batch_size).backward()
       model.opt.step()
 
-    print "Epoch: %03d\tAverage Train Loss: %g" % (epoch, loss/N)
+
+    print "Epoch: %03d\tAverage Train Loss: %g (%0.1f)" % (epoch, loss/N,
+      time.time()-begin)
 
 def test(model, batches):
   model.eval()
@@ -96,14 +100,14 @@ if __name__ == "__main__":
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)
-  # ae = models.AE4k(D).to(device)
+  ae = models.AE4(D).to(device)
   # ae = models.AE5(D, 32, D).to(device)
-  ae = models.AE6(C).to(device)
+  # ae = models.AE6(C).to(device)
 
-  train(ae, get_batches(Xc_trn, Xc_trn, args.batch_size, args.shuffle),
+  train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
     args.num_epochs)
 
   if args.test:
     X_tst, Xf_tst, Xc_tst = get_data(args.test, device)
 
-    test(ae, get_batches(Xc_tst, Xc_tst, args.batch_size, args.shuffle))
+    test(ae, get_batches(Xf_tst, Xf_tst, args.batch_size, args.shuffle))
