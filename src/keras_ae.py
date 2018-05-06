@@ -90,11 +90,14 @@ if __name__ == "__main__":
   X_trn, Xf_trn = get_data(args.train)
   X_tst, Xf_tst = get_data(args.test)
 
+  Xc_trn = X_trn[:,None]
+  Xc_tst = X_tst[:,None]
+
   H, W = X_trn.shape[1:]
   D_in = H * W
 
   # ae = AE1(D_in, D_in)
   ae = AE2(H, W)
 
-  ae.fit(X_trn, X_trn, epochs=args.num_epochs, batch_size=args.batch_size,
-    shuffle=args.shuffle, validation_data=(Xf_tst, Xf_tst))
+  ae.fit(Xc_trn, Xc_trn, epochs=args.num_epochs, batch_size=args.batch_size,
+    shuffle=args.shuffle, validation_data=(Xc_tst, Xc_tst))
