@@ -165,7 +165,7 @@ class AE6(nn.Module):
       nn.MaxPool2d(2, padding=0), # 14 -> 7
       nn.Conv2d(8, 8, 3, padding=1),
       nn.ReLU(),
-      nn.ZeroPad2d((0,0,1,1)), # 7 -> 8
+      nn.ZeroPad2d((0, 1, 0, 1)), # 7 -> 8 (pad right and bottom)
       nn.MaxPool2d(2, padding=0)) # 8 -> 4
     self.dec = dec = nn.Sequential(
       nn.Conv2d(8, 8, 3, padding=1),
