@@ -58,7 +58,7 @@ def get_data(file_name, device):
   x = t.load(file_name).to(device).float().div_(255)
 
   # 1 channel: NHW
-  if len(x.size() == 3):
+  if len(x.size()) == 3:
     x.unsqueeze_(3)
 
   xf = x.reshape(x.size(0), -1)
