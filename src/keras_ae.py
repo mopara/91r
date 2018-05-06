@@ -46,7 +46,8 @@ def AE(D_in, D_out):
   ae.add(enc)
   ae.add(dec)
 
-  ae.compile(optimizer=KO.Adam(), loss=KL.binary_crossentropy)
+  ae.compile(optimizer=KO.Adadelta(), loss=KL.binary_crossentropy)
+  # ae.compile(optimizer=KO.Adam(), loss=KL.binary_crossentropy)
 
   return ae
 
