@@ -89,6 +89,8 @@ def get_data(file_name, device):
 if __name__ == "__main__":
   args = parse_args()
 
+  print args
+
   if not args.random:
     T.manual_seed(1)
 
