@@ -30,13 +30,24 @@ torch.manual_seed(args.seed)
 
 device = torch.device("cuda" if args.cuda else "cpu")
 
+# kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
+# train_loader = torch.utils.data.DataLoader(
+#     datasets.MNIST('../data', train=True, download=True,
+#                    transform=transforms.ToTensor()),
+#     batch_size=args.batch_size, shuffle=True, **kwargs)
+# test_loader = torch.utils.data.DataLoader(
+#     datasets.MNIST('../data', train=False, transform=transforms.ToTensor()),
+#     batch_size=args.batch_size, shuffle=True, **kwargs)
+
+data_dir = "/home/ra_login/91r/src/ex/data"
+
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
 train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=True, download=True,
+    datasets.MNIST(data_dir, train=True, download=True,
                    transform=transforms.ToTensor()),
     batch_size=args.batch_size, shuffle=True, **kwargs)
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=False, transform=transforms.ToTensor()),
+    datasets.MNIST(data_dir, train=False, transform=transforms.ToTensor()),
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
 
