@@ -64,8 +64,8 @@ def AE2(H, W):
   enc.add(KN.Conv2D(8, (3, 3), activation='relu', padding='same'))
   enc.add(KN.MaxPooling2D((2, 2), padding='same'))
 
-  dec.add(KN.Conv2D(8, (3, 3), activation='relu', padding='same'),
-    input_shape=(4, 4, 4))
+  dec.add(KN.Conv2D(8, (3, 3), activation='relu', padding='same',
+    input_shape=(4, 4, 4)))
   dec.add(KN.UpSampling2D((2, 2)))
   dec.add(KN.Conv2D(8, (3, 3), activation='relu', padding='same'))
   dec.add(KN.UpSampling2D((2, 2)))
