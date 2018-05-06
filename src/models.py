@@ -177,7 +177,7 @@ class AE6(nn.Module):
       nn.Conv2d(8, 16, 3), # N + F - 1 = 16 + 3 - 1 -> 14
       nn.ReLU(),
       nn.Upsample(scale_factor=2, mode="nearest"), # 14 - 28
-      nn.Conv2d(16, 16, 3, padding=1),
+      nn.Conv2d(16, 1, 3, padding=1),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)
     self.opt = optim.Adadelta(ae.parameters(), rho=0.95, eps=1e-7)
