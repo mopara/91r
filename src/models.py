@@ -109,8 +109,8 @@ class AE4(nn.Module):
       nn.Linear(128, D_in),
       nn.Sigmoid())
     self.ae = ae = nn.Sequential(enc, dec)
-    # self.opt = optim.Adadelta(ae.parameters())
-    self.opt = optim.Adam(ae.parameters(), lr=1e-3)
+    self.opt = optim.Adadelta(ae.parameters())
+    # self.opt = optim.Adam(ae.parameters(), lr=1e-3)
 
   def forward(self, X, Y):
     Y_prd = self.ae(X)
