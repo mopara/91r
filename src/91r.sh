@@ -18,17 +18,21 @@ function pull {
 
 function mlrun {
   pushd /home/ra_login/91r
-  # logfile=src/log/"$(date '+20%y-%m-%d-%H-%M-%S')-$1.txt"
-  # cat src/"$1".py > "$logfile"
-  # echo "[EOF]" >> "$logfile"
-  python -u src/"$1".py -s -c -b "$2" -n "$3" -i mnist/train-images-idx3-ubyte."$4" -j mnist/t10k-images-idx3-ubyte."$4" # | tee -a "$logfile"
+  logfile=src/log/"$(date '+20%y-%m-%d-%H-%M-%S')-$1.txt"
+  cat src/"$1".py > "$logfile"
+  echo "[EOF]" >> "$logfile"
+  python -u src/"$1".py -s -b "$2" -n "$3" -i mnist/train-images-idx3-ubyte."$4" -j mnist/t10k-images-idx3-ubyte."$4" | tee -a "$logfile"
   popd
 }
 
-function keras_ae {
-  mlrun keras_ae 256 "$1" npy
-}
+# function keras_ae {
+#   mlrun keras_ae 256 "$1" npy
+# }
 
-function 91r {
-  mlrun 91r 128 "$1" pt
+# function 91r {
+#   mlrun 91r 128 "$1" pt
+# }
+
+function main {
+  mlrun main 128 "$1" pt
 }
