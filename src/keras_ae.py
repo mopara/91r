@@ -90,8 +90,8 @@ if __name__ == "__main__":
   X_trn, Xf_trn = get_data(args.train)
   X_tst, Xf_tst = get_data(args.test)
 
-  Xc_trn = X_trn[None,:,:]
-  Xc_tst = X_tst[None,:,:]
+  Xc_trn = X_trn[:,:,:,None]
+  Xc_tst = X_tst[:,:,:,None]
 
   print Xc_trn.shape
 
