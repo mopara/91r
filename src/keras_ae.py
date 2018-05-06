@@ -80,6 +80,11 @@ def AE2(H, W):
 
   return ae
 
+def AE3(H):
+  enc = KM.Sequential()
+
+  enc.add(KN.Dense())
+
 def get_data(file_name):
   X = np.load(file_name).astype(np.float64)/255
 
