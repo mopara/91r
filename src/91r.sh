@@ -17,12 +17,12 @@ function pull {
 
 function keras_ae {
   pushd /home/ra_login/91r
-  python src/keras_ae.py -s -b256 -n100 -i mnist/train-images-idx3-ubyte.npy -j mnist/t10k-images-idx3-ubyte.npy | tee log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
+  python src/keras_ae.py -s -b256 -n100 -i mnist/train-images-idx3-ubyte.npy -j mnist/t10k-images-idx3-ubyte.npy | tee src/log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
   popd
 }
 
 function 91r {
   pushd /home/ra_login/91r
-  python src/91r.py -s -c -b128 -n100 -i mnist/train-images-idx3-ubyte.T -j mnist/t10k-images-idx3-ubyte.T | tee log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
+  python src/91r.py -s -c -b128 -n100 -i mnist/train-images-idx3-ubyte.T -j mnist/t10k-images-idx3-ubyte.T | tee src/log/"$(date '+20%y-%m-%d-%H-%M-%S.txt')"
   popd
 }
