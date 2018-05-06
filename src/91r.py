@@ -40,7 +40,6 @@ def train(model, batches, num_epochs):
 
     for (X, Y) in batches:
       batch_size = X.size(0)
-      print X.shape
 
       Y_prd, batch_loss = model(X, Y)
       loss += batch_loss
