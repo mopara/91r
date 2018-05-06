@@ -11,6 +11,7 @@ bind 'set completion-ignore-case on'
 function pull {
   pushd /home/ra_login/91r
   git pull origin master
+  source /home/ra_login/91r/src/91r.sh
   popd
 }
 
