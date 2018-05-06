@@ -75,7 +75,7 @@ def get_data(file_name, device):
     X.unsqueeze_(3)
 
   Xf = X.reshape(X.size(0), -1)
-  Xc = X.permute(0,2,3,1) # NHWC -> NCHW
+  Xc = X.permute(0,3,1,2) # NHWC -> NCHW
 
   return (X, Xf, Xc)
 
