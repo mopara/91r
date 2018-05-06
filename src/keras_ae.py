@@ -46,18 +46,18 @@ def parse_args():
 
   # return model
 
-def AE():
+def AE(D_in, D_out):
   enc = KM.Sequential()
   dec = KM.Sequential()
   ae = KM.Sequential()
 
-  enc.add(KN.Dense(128, activation=KA.relu))
+  enc.add(KN.Dense(128, activation=KA.relu, input_shape=(D_in,)))
   enc.add(KN.Dense(64, activation=KA.relu))
   enc.add(KN.Dense(32, activation=KA.relu))
 
   dec.add(KN.Dense(64, activation=KA.relu))
   dec.add(KN.Dense(128, activation=KA.relu))
-  dec.add(KN.Dense(784, activation=KA.sigmoid))
+  dec.add(KN.Dense(D_out, activation=KA.sigmoid))
 
   ae.add(enc)
   ae.add(dec)
@@ -75,9 +75,11 @@ def get_data(file_name):
 if __name__ == "__main__":
   args = parse_args()
 
-  x_trn, xf_trn = get_data(args.train)
-  x_tst, xf_tst = get_data(args.test)
+  X_trn, Xf_trn = get_data(args.train)
+  X_tst, Xf_tst = get_data(args.test)
 
-  ae = AE()
-  ae.fit(xf_trn, xf_trn, epochs=args.num_epochs, batch_size=args.batch_size,
-    shuffle=args.shuffle, validation_data=(xf_tst, xf_tst))
+  D_in = np.prod(X_trn.shape[1:])
+
+  ae = AE(D_in, D_in)
+  ae.fit(Xf_trn, Xf_trn, epochs=args.num_epochs, batch_size=args.batch_size,
+    shuffle=args.shuffle, validation_data=(Xf_tst, Xf_tst))
