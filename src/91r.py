@@ -69,9 +69,15 @@ def get_batches(X, Y, batch_size, shuffle):
 
 def get_data(file_name, device):
   X = (T.load(file_name).float()/255).to(device)
-  N = X.shape[0]
 
-  return (X, X.reshape(N, -1), X.shape[1], X.shape[2], np.prod(X.shape[1:]))
+  # 1-channel
+  if len(X.size()) == 3:
+    X.unsqueeze(3)
+
+  Xf = X.reshape(X.size(0), -1)
+  Xc = X.permute(0,2,3,1) # NHWC -> NCHW
+
+  return (X, Xf, Xc)
 
 # python 91r/src/91r.py -s -c -b256 -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
@@ -82,18 +88,19 @@ if __name__ == "__main__":
 
   device = T.device("cuda" if args.cuda else "cpu")
 
-  X_trn, Xf_trn, height, width, D_in = get_data(args.train, device)
+  X_trn, Xf_trn, Xc_trn = get_data(args.train, device)
 
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)
-  ae = models.AE4(D_in).to(device)
-  # ae = models.AE5(D_in, 32, D_in).to(device)
+  ae = models.AE4(D).to(device)
+  # ae = models.AE5(D, 32, D).to(device)
+  # ae = models.AE6(X_trn.size(3))
 
-  train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
+  train(ae, get_batches(Xc_trn, Xc_trn, args.batch_size, args.shuffle),
     args.num_epochs)
 
   if args.test:
-    X_tst, Xf_tst, _, _, _ = get_data(args.test, device)
+    X_tst, Xf_tst, Xc_tst = get_data(args.test, device)
 
-    test(ae, get_batches(Xf_tst, Xf_tst, args.batch_size, args.shuffle))
+    test(ae, get_batches(Xc_tst, Xc_tst, args.batch_size, args.shuffle))
