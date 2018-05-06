@@ -5,8 +5,6 @@ import time
 import torch as T
 import torch.utils.data as data
 
-T.backends.cudnn.enabled = False
-
 def parse_args():
   parser = argparse.ArgumentParser()
 
@@ -83,7 +81,7 @@ def get_data(file_name, device):
 
   return (X, Xf, Xc)
 
-# python 91r/src/91r.py -s -c -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
+# python 91r/src/91r.py -s -c -n100 --train=91r/mnist/train-images-idx3-ubyte.pt --test=91r/mnist/t10k-images-idx3-ubyte.pt
 if __name__ == "__main__":
   args = parse_args()
 

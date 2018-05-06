@@ -22,7 +22,7 @@ def save(dst_dir, file_name, arr):
   file_name = path.join(dst_dir, path.splitext(path.basename(file_name))[0])
 
   np.save(file_name, arr)
-  T.save(T.tensor(arr), file_name+".T")
+  T.save(T.tensor(arr), file_name+".pt")
 
   print "%s\tshape: %s" % (file_name, arr.shape)
 

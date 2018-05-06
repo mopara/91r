@@ -30,5 +30,5 @@ function keras_ae {
 }
 
 function 91r {
-  mlrun 91r 128 "$1" T
+  mlrun 91r 128 "$1" pt
 }
