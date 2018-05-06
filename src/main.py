@@ -90,4 +90,4 @@ if __name__ == "__main__":
   if args.test:
     x, xf, xc = get_data(args.test, device)
 
-    test(vae, get_batches(xf, xf, args.batch_size, args.shuffle), args.epochs)
+    test(vae, get_batches(xf, xf, args.batch_size, args.shuffle))
