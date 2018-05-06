@@ -40,6 +40,7 @@ def train(model, batches, num_epochs):
 
     for (X, Y) in batches:
       batch_size = X.size(0)
+      print X.shape
 
       Y_prd, batch_loss = model(X, Y)
       loss += batch_loss
@@ -51,8 +52,8 @@ def train(model, batches, num_epochs):
       model.opt.step()
 
 
-    print "Epoch: %03d\tAverage Train Loss: %g (%0.1f)" % (epoch, loss/N,
-      time.time()-begin)
+    print "Epoch: %03d\t - %01.fs - Average Train Loss: %g" % (epoch,
+      time.time()-begin, loss/N)
 
 def test(model, batches):
   model.eval()
@@ -83,7 +84,7 @@ def get_data(file_name, device):
 
   return (X, Xf, Xc)
 
-# python 91r/src/91r.py -s -c -b256 -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
+# python 91r/src/91r.py -s -c -n100 --train=91r/mnist/train-images-idx3-ubyte.T --test=91r/mnist/t10k-images-idx3-ubyte.T
 if __name__ == "__main__":
   args = parse_args()
 
