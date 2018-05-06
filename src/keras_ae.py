@@ -55,7 +55,7 @@ def AE(D_in, D_out):
   enc.add(KN.Dense(64, activation=KA.relu))
   enc.add(KN.Dense(32, activation=KA.relu))
 
-  dec.add(KN.Dense(64, activation=KA.relu))
+  dec.add(KN.Dense(64, activation=KA.relu, input_shape=(32,)))
   dec.add(KN.Dense(128, activation=KA.relu))
   dec.add(KN.Dense(D_out, activation=KA.sigmoid))
 
