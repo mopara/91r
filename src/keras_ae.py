@@ -78,6 +78,8 @@ def AE2(H, W):
 
   ae.compile(optimizer="adadelta", loss="binary_crossentropy")
 
+  return ae
+
 def get_data(file_name):
   X = np.load(file_name).astype(np.float64)/255
 
