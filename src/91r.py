@@ -101,14 +101,14 @@ if __name__ == "__main__":
   # ae = models.AE1(D, 32, D).to(device)
   # ae = models.AE2(D, 32, D, args.l1).to(device)
   # ae = models.AE3(D, D).to(device)
-  ae = models.AE4(D).to(device)
+  # ae = models.AE4(D).to(device)
   # ae = models.AE5(D, 32, D).to(device)
-  # ae = models.AE6(C).to(device)
+  ae = models.AE6(C).to(device)
 
-  train(ae, get_batches(Xf_trn, Xf_trn, args.batch_size, args.shuffle),
+  train(ae, get_batches(Xc_trn, Xc_trn, args.batch_size, args.shuffle),
     args.num_epochs)
 
   if args.test:
     X_tst, Xf_tst, Xc_tst = get_data(args.test, device)
 
-    test(ae, get_batches(Xf_tst, Xf_tst, args.batch_size, args.shuffle))
+    test(ae, get_batches(Xc_tst, Xc_tst, args.batch_size, args.shuffle))
