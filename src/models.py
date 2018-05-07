@@ -63,11 +63,11 @@ class VAE(nn.Module):
 
     self.enc = enc = nn.Sequential(
       nn.Linear(D_in, D_h),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       Lambda(mean_fc, log_var_fc))
     self.dec = dec = nn.Sequential(
       nn.Linear(D_z, D_h),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Linear(D_h, D_in),
       nn.Sigmoid())
     self.opt = optim.Adam(it.chain(enc.parameters(), mean_fc.parameters(),
@@ -138,12 +138,12 @@ class InfoVAE(nn.Module):
       nn.Linear(D_h, D_z))
     self.dec = dec = nn.Sequential(
       nn.Linear(D_z, D_h),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Linear(D_h, C_h2*H/4*W/4),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       Reshape(C_h2, H/4, W/4),
       nn.ConvTranspose2d(C_h2, C_h1, 4, 2, padding=1),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.ConvTranspose2d(C_h1, C_in, 4, 2, padding=1),
       nn.Sigmoid())
     self.opt = optim.Adam(it.chain(enc.parameters(), dec.parameters()))
@@ -165,7 +165,8 @@ class InfoVAE(nn.Module):
     y_k = self.kernel(y, y)
     y_prd_y_k = self.kernel(y_prd, y)
 
-    return y_prd_y_k.mul(-2).add_(y_prd_k).add_(y_k).mean()
+    return y_k.mean() + y_prd_k.mean() - 2*y_prd_y_k.mean()
+    # return y_prd_y_k.mul(-2).add_(y_prd_k).add_(y_k).mean()
 
   def forward(self, x, y):
     z = self.enc(x)
