@@ -93,6 +93,21 @@ class VAE2(nn.Module):
 
     return (y_prd, bce+kld)
 
+class Flatten(nn.Module):
+  def __init__(self):
+    super(Flatten, self).__init__()
+
+  def forward(self, x):
+    return x.reshape(x.size(0), -1)
+
+class Reshape(nn.Module):
+  def __init__(self, *size):
+    super(Reshape, self).__init__()
+    self.size = size
+
+  def forward(self, x):
+    return x.reshape(x.size(0), *self.size)
+
 class VAE3(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_latent):
     super(VAE3, self).__init__()
@@ -107,16 +122,17 @@ class VAE3(nn.Module):
       nn.Conv2d(C_h, C_h, 3, padding=1),
       nn.ReLU(),
       nn.Conv2d(C_h, C_h, 3, padding=1),
-      nn.ReLU())
-    self.h_fc = h_fc = nn.Linear(C_h*H/2*W/2, D_h)
+      nn.ReLU(),
+      Flatten(),
+      nn.Linear(C_h*H/2*W/2, D_h))
     self.mean_fc = mean_fc = nn.Linear(D_h, D_latent)
     self.log_var_fc = log_var_fc = nn.Linear(D_h, D_latent)
-    self.decode_1 = nn.Sequential(
+    self.decode = nn.Sequential(
       nn.Linear(D_latent, D_h),
       nn.ReLU(),
       nn.Linear(D_h, C_h*H/2*W/2),
-      nn.ReLU())
-    self.decode_2 = nn.Sequential(
+      nn.ReLU(),
+      Reshape(C_h, H/2, W/2),
       nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
       nn.ReLU(),
       nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
@@ -127,8 +143,7 @@ class VAE3(nn.Module):
       nn.Sigmoid())
 
   def encode(self, x):
-    tmp = self.pre(x)
-    h = self.h_fc(tmp.reshape(tmp.size(0), -1))
+    h = self.pre(x)
 
     return (self.mean_fc(h), self.log_var_fc(h))
 
@@ -140,10 +155,7 @@ class VAE3(nn.Module):
 
   def forward(self, x, y):
     mean, log_var = self.encode(x)
-    z = self.sample(mean, log_var)
-    tmp = self.decode_1(z)
-    tmp = tmp.reshape(tmp.size(0), C_h, H/2, W/2)
-    y_prd = self.decode_2(tmp)
+    y_prd = self.decode(self.sample(mean, log_var))
 
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
     kld = -0.5*(1+log_var).sub_(mean.pow(2)).sub_(log_var.exp()).sum()
