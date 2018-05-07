@@ -57,8 +57,8 @@ def test(model, batches):
   print "Average Test Loss: %g" % (loss/len(batches.dataset))
 
 # dont load frames into gpu memory
-def get_data(file_name):
-  x = t.load(file_name).float().div_(255)
+def get_data(file_name, device):
+  x = t.load(file_name).to(device).float().div_(255)
 
   # 1 channel: NHW
   if len(x.size()) == 3:
@@ -79,21 +79,21 @@ if __name__ == "__main__":
   if not args.random:
     t.manual_seed(0)
 
-  device = t.device("cuda" if t.cuda.is_available() else "cpu")
+  # device = t.device("cuda" if t.cuda.is_available() else "cpu")
+  device = t.device("cpu")
 
-  x, xf, xc = get_data(args.train)
+  x, xf, xc = get_data(args.train, device)
   N, H, W, C = x.size()
   D = H * W * C
 
   # vae = models.VAE1(D, 400, 20).to(device)
   # vae = models.VAE2(H, W, C, 16, 8, 20).to(device)
   # vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
-  vae = models.VAE3(H, W, C, 64, 128, 2)
+  vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
 
-  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs,
-    device)
+  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs)
 
   if args.test:
-    x, xf, xc = get_data(args.test)
+    x, xf, xc = get_data(args.test, device)
 
     test(vae, get_batches(xc, xc, args.batch_size, args.shuffle))
