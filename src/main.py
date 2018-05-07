@@ -16,8 +16,8 @@ def parse_args():
     help="input batch size for training (default: 128)", metavar="N")
   parser.add_argument("-n", "--epochs", default=10, type=int,
     help="number of epochs to train (default: 10)", metavar="E")
-  parser.add_argument("--l1", default=0, type=float,
-    help="L1 regularization coefficient (default: 0)", metavar="L1")
+  parser.add_argument("-m", "--model", default=1, type=int,
+    help="model to train (default: 1)", metavar="M")
   parser.add_argument("-j", "--test", type=str, help="set testing dataset",
     metavar="X")
   parser.add_argument("-i", "--train", type=str, required=True,
@@ -63,10 +63,7 @@ def get_data(file_name, device):
   if len(x.size()) == 3:
     x.unsqueeze_(3)
 
-  xf = x.reshape(x.size(0), -1)
-  xc = x.permute(0, 3, 1, 2) # NHWC -> NCHW
-
-  return (x, xf, xc)
+  return x
 
 def get_batches(x, y, batch_size, shuffle):
   return data.DataLoader(data.TensorDataset(x, y), batch_size=batch_size,
@@ -80,17 +77,20 @@ if __name__ == "__main__":
 
   device = t.device("cuda" if t.cuda.is_available() else "cpu")
 
-  x, xf, xc = get_data(args.train, device)
+  x = get_data(args.train, device)
   N, H, W, C = x.size()
   D = H * W * C
 
-  # vae = models.VAE1(D, 400, 20).to(device)
-  # vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
-  vae = models.VAE3(H, W, C, 8, 32, 2).to(device)
+  vae = {
+    1: models.VAE1(D, 400, 20),
+    3: models.VAE3(H, W, C, 8, 32, 2) # 64, 128, 2
+  }[args.model].to(device)
 
-  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs)
+  x = vae.preprocess(x)
+
+  train(vae, get_batches(x, x, args.batch_size, args.shuffle), args.epochs)
 
   if args.test:
-    x, xf, xc = get_data(args.test, device)
+    x = vae.preprocess(get_data(args.test, device))
 
-    test(vae, get_batches(xc, xc, args.batch_size, args.shuffle))
+    test(vae, get_batches(x, x, args.batch_size, args.shuffle))
