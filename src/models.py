@@ -77,7 +77,7 @@ class VAE2(nn.Module, VAE):
       nn.Upsample(scale_factor=2, mode="nearest"), # 60, 80 -> 120, 160
       nn.Conv2d(C2, C1, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest") # 120, 160 -> 240, 320
+      nn.Upsample(scale_factor=2, mode="nearest"), # 120, 160 -> 240, 320
       nn.Conv2d(C1, C_in, 3, padding=1),
       nn.Sigmoid())
     self.opt = optim.Adam(it.chain(self.pre.parameters(), mu_fc.parameters(),
