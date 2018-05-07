@@ -90,6 +90,8 @@ class VAE2(nn.Module):
     y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(-1, 1,
       self.H/4, self.W/4))
 
+    print y_prd.shape, y.shape
+
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
     kld = -0.5*(1+log_var).sub_(mean.pow(2)).sub_(log_var.exp()).sum()
 
