@@ -140,7 +140,7 @@ if __name__ == "__main__":
           test_x = None
           test_batches = None
 
-        train_hist, test_hist = train(vae, train_batches, 25, test_batches)
+        train_hist, test_hist = train(vae, train_batches, 1, test_batches)
 
         # ex. src/hist/vae-hist-e5.practice.pt
         train_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
