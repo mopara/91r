@@ -108,7 +108,7 @@ class VAE3(nn.Module):
       nn.ReLU(),
       nn.Conv2d(C_h, C_h, 3, padding=1),
       nn.ReLU())
-    self.h_fc = h_fc = nn.Linear(H*W, D_h)
+    self.h_fc = h_fc = nn.Linear(C_h*H/2*W/2, D_h)
     self.mean_fc = mean_fc = nn.Linear(D_h, D_latent)
     self.log_var_fc = log_var_fc = nn.Linear(D_h, D_latent)
     self.decode_1 = nn.Sequential(
