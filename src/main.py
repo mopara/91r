@@ -129,7 +129,7 @@ if __name__ == "__main__":
         train_x = vae.preprocess(train_x)
         train_batches = get_batches(train_x, train_x, 128, True)
 
-        if test_batches:
+        if test_file:
           test_x = vae.preprocess(test_x)
           test_batches = get_batches(test_x, test_x, 128, True)
         else:
