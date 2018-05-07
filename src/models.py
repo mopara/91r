@@ -42,7 +42,7 @@ class VAE1(nn.Module):
     return (y_prd, bce+kld)
 
 class VAE2(nn.Module):
-  def __init__(self, C_in, C1, C2, D_latent):
+  def __init__(self, H, W, C_in, C1, C2, D_latent):
     super(VAE2, self).__init__()
 
     self.pre = pre = nn.Sequential(
@@ -52,9 +52,9 @@ class VAE2(nn.Module):
       nn.Conv2d(C1, 1, 3, padding=1),
       nn.ReLU(),
       nn.MaxPool2d(2, padding=0)) # 120, 160 -> 60, 80
-    self.mean_fc = mean_fc = nn.Linear(60*80, D_latent)
-    self.log_var_fc = log_var_fc = nn.Linear(60*80, D_latent)
-    self.z_fc = z_fc = nn.Linear(D_latent, 60*80)
+    self.mean_fc = mean_fc = nn.Linear(H*W, D_latent)
+    self.log_var_fc = log_var_fc = nn.Linear(H*W, D_latent)
+    self.z_fc = z_fc = nn.Linear(D_latent, H*W)
     self.decode = decode = nn.Sequential(
       nn.Conv2d(1, C2, 3, padding=1),
       nn.ReLU(),
