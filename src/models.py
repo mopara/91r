@@ -59,7 +59,7 @@ class Reshape(nn.Module):
 
 class VAE(nn.Module):
   def __init__(self, D_in, D_h, D_z):
-    super(VAE1, self).__init__()
+    super(VAE, self).__init__()
 
     mean_fc = nn.Linear(D_h, D_z)
     log_var_fc = nn.Linear(D_h, D_z)
@@ -84,7 +84,7 @@ class VAE(nn.Module):
 
 class CVAE(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_z):
-    super(VAE3, self).__init__()
+    super(CVAE, self).__init__()
 
     mean_fc = nn.Linear(D_h, D_z)
     log_var_fc = nn.Linear(D_h, D_z)
