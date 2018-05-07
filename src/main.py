@@ -113,7 +113,7 @@ if __name__ == "__main__":
     else:
       TEST_X = None
 
-    for D_z in (2, 4, 8, 16, 32, 64):
+    for D_z in (2, 4, 8, 16):
       for (name, vae) in {
         "vae": models.VAE(D, 400, D_z),
         "vae2": models.VAE2(D, 128, 64, 32, D_z),
