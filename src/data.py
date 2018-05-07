@@ -67,6 +67,7 @@ def vids(file_names, dst_dir):
 # ex:
 # python src/data.py mnist -i mnist/src/*-ubyte -o mnist/
 # python src/data.py vids -i vids/src/a4.sax.mov -o vids/
+# python src/data.py vids -i vids/src/e5.practice.mov -o vids/
 if __name__ == "__main__":
   action, dst_dir, file_names = parse_args()
 

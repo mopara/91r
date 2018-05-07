@@ -38,7 +38,7 @@ def train(model, batches, epochs):
       batch_size = x.size(0)
 
       y_prd, batch_loss = model(x, y)
-      epoch_loss += batch_loss
+      epoch_loss += batch_loss.item()
 
       model.opt.zero_grad()
       batch_loss.backward()
@@ -51,7 +51,7 @@ def test(model, batches):
   model.eval()
 
   with t.no_grad():
-    loss = sum(model(x, y)[1] for (x, y) in batches)
+    loss = sum(model(x, y)[1].item() for (x, y) in batches)
 
   print "Average Test Loss: %g" % (loss/len(batches.dataset))
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
   N, H, W, C = x.size()
   D = H * W * C
 
-  vae = models.VAE(D, 400, 20).to(device)
+  vae = models.VAE1(D, 400, 20).to(device)
 
   train(vae, get_batches(xf, xf, args.batch_size, args.shuffle), args.epochs)
 
