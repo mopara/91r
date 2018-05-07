@@ -52,8 +52,8 @@ class VAE2(nn.Module):
       nn.Conv2d(C1, 1, 3, padding=1),
       nn.ReLU(),
       nn.MaxPool2d(2, padding=0)) # 120, 160 -> 60, 80
-    self.mean_fc = mean_fc = nn.Linear((H*W)/4, D_latent)
-    self.log_var_fc = log_var_fc = nn.Linear((H*W)/4, D_latent)
+    self.mean_fc = mean_fc = nn.Linear((H*W)/16, D_latent)
+    self.log_var_fc = log_var_fc = nn.Linear((H*W)/16, D_latent)
     self.z_fc = z_fc = nn.Linear(D_latent, H*W)
     self.decode = decode = nn.Sequential(
       nn.Conv2d(1, C2, 3, padding=1),
