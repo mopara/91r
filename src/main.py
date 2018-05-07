@@ -90,6 +90,8 @@ def get_batches(x, y, batch_size, shuffle):
 if __name__ == "__main__":
   prefix = "/home/ra_login/91r"
 
+  gpu = t.device("cuda")
+
   files = (
     ("mnist/train-images-idx3-ubyte.pt", "mnist/t10k-images-idx3-ubyte.pt"),
     ("vids/a4.sax.pt", None), ("vids/e5.pratice.pt", None))
@@ -98,13 +100,13 @@ if __name__ == "__main__":
     train_file = prefix + train_file
     test_file = prefix + test_file
 
-    train_x = get_data(train_file, device)
+    train_x = get_data(train_file, gpu)
 
     N, H, W, C = train_x.size()
     D = H * W * C
 
     if test_file:
-      test_x = get_data(test_file)
+      test_x = get_data(test_file, gpu)
     else:
       test_x = None
 
@@ -121,7 +123,7 @@ if __name__ == "__main__":
         print name, D_z
         print "<<<<<<<<<"
 
-        vae = vae.to("gpu")
+        vae = vae.to(gpu)
 
         train_x = vae.preprocess(train_x)
         train_batches = get_batches(train_x, train_x, 128, True)
@@ -147,6 +149,7 @@ if __name__ == "__main__":
         t.save(vae.state_dict(), train_filename.replace("-hist-", "-model-") +
           ".pt")
 
-        vae.to("cpu")
-
         del vae
+
+    del train_x.to(cpu)
+    del test_x.to(cpu)
