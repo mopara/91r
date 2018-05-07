@@ -41,7 +41,7 @@ def train(model, batches, epochs):
       epoch_loss += batch_loss.item()
 
       model.opt.zero_grad()
-      batch_loss.backward()
+      batch_loss.div(batch_size).backward()
       model.opt.step()
 
     print "Epoch: %03d [%0.1fs]\tAverage Train Loss: %g" % (epoch,
@@ -83,8 +83,9 @@ if __name__ == "__main__":
   N, H, W, C = x.size()
   D = H * W * C
 
-  vae = models.VAE1(D, 400, 20).to(device)
+  # vae = models.VAE1(D, 400, 20).to(device)
   # vae = models.VAE2(H, W, C, 16, 8, 20).to(device)
+  vae = models.VAE3(H, W, C, 64, 8, 20, 128, 2).to(device)
 
   train(vae, get_batches(xf, xf, args.batch_size, args.shuffle), args.epochs)
 

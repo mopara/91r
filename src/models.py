@@ -18,7 +18,7 @@ class VAE1(nn.Module):
       nn.ReLU(),
       nn.Linear(D_hidden, D_in),
       nn.Sigmoid())
-    self.opt = optim.Adam(it.chain(self.pre.parameters(), mean_fc.parameters(),
+    self.opt = optim.Adam(it.chain(pre.parameters(), mean_fc.parameters(),
       log_var_fc.parameters(), decode.parameters()), lr=1e-3)
 
   def encode(self, x):
@@ -93,3 +93,59 @@ class VAE2(nn.Module):
 
     return (y_prd, bce+kld)
 
+class VAE3(nn.Module):
+  def __init__(self, H, W, C_in, C_h, D_h, D_latent):
+    super(VAE3, self).__init__()
+
+    self.pre = pre = nn.Sequential(
+      nn.ZeroPad2d((0, 1, 0, 1)),
+      nn.Conv2d(C_in, C_h, 2),
+      nn.ReLU(),
+      nn.ZeroPad2d((0, W % 2, 0, H % 2)),
+      nn.Conv2d(C_h, C_h, 2, 2),
+      nn.ReLU(),
+      nn.Conv2d(C_h, C_h, 3, padding=1)
+      nn.ReLU(),
+      nn.Conv2d(C_h, C_h, 3, padding=1)
+      nn.ReLU())
+    self.h_fc = h_fc = nn.Linear(H*W, D_h)
+    self.mean_fc = mean_fc = nn.Linear(D_h, D_latent)
+    self.log_var_fc = log_var_fc = nn.Linear(D_h, D_latent)
+    self.decode_1 = nn.Sequential(
+      nn.Linear(D_latent, D_h),
+      nn.ReLU()
+      nn.Linear(D_h, C_h*H/2*W/2),
+      nn.ReLU())
+    self.decode_2 = nn.Sequential(
+      nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
+      nn.ReLU(),
+      nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
+      nn.ReLU(),
+      nn.ConvTranspose2d(C_h, C_h, 3, 2),
+      nn.ReLU(),
+      nn.Conv2d(C_h, C_in, 2),
+      nn.Sigmoid())
+
+  def encode(self, x):
+    tmp = self.pre(x)
+    h = self.h_fc(tmp.reshape(tmp.size(0), -1))
+
+    return (self.mean_fc(h), self.log_var_fc(h))
+
+  def sample(self, mean, log_var):
+    if self.training:
+      return t.randn_like(log_var).mul_((0.5*log_var).exp_()).add_(mean)
+    else:
+      return mean
+
+  def forward(self, x, y):
+    mean, log_var = self.encode(x)
+    z = self.sample(mean, log_var)
+    tmp = self.decode_1(z)
+    tmp = tmp.reshape(tmp.size(0), C_h, H/2, W/2)
+    y_prd = self.decode_2(tmp)
+
+    bce = f.binary_cross_entropy(y_prd, y, size_average=False)
+    kld = -0.5*(1+log_var).sub_(mean.pow(2)).sub_(log_var.exp()).sum()
+
+    return (y_prd, bce+kld)
