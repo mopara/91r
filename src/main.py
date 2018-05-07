@@ -25,7 +25,7 @@ def parse_args():
 
   return parser.parse_args()
 
-def train(model, batches, epochs, device):
+def train(model, batches, epochs):
   model.train()
 
   N = len(batches.dataset)
