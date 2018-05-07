@@ -71,7 +71,7 @@ class VAE2(nn.Module):
   def encode(self, x):
     h = self.pre(x)
 
-    h.resize_(h.size(0), -1)
+    h.reshape(h.size(0), -1)
 
     return (self.mean_fc(h), self.log_var_fc(h))
 
@@ -83,7 +83,7 @@ class VAE2(nn.Module):
 
   def forward(self, x, y):
     mean, log_var = self.encode(x)
-    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).resize_(1, 60,
+    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(1, 60,
       80))
 
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
