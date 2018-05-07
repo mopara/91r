@@ -116,6 +116,11 @@ if __name__ == "__main__":
         "cvae": models.CVAE(H, W, C, 8, 32, D_z),
         "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, D_z)}:
 
+        print ">>>>>>>>>"
+        print train_file, test_file
+        print name, D_z
+        print "<<<<<<<<<"
+
         vae = vae.to("gpu")
 
         train_x = vae.preprocess(train_x)
