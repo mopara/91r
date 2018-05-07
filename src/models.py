@@ -104,9 +104,9 @@ class VAE3(nn.Module):
       nn.ZeroPad2d((0, W % 2, 0, H % 2)),
       nn.Conv2d(C_h, C_h, 2, 2),
       nn.ReLU(),
-      nn.Conv2d(C_h, C_h, 3, padding=1)
+      nn.Conv2d(C_h, C_h, 3, padding=1),
       nn.ReLU(),
-      nn.Conv2d(C_h, C_h, 3, padding=1)
+      nn.Conv2d(C_h, C_h, 3, padding=1),
       nn.ReLU())
     self.h_fc = h_fc = nn.Linear(H*W, D_h)
     self.mean_fc = mean_fc = nn.Linear(D_h, D_latent)
