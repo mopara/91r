@@ -41,7 +41,6 @@ def train(model, batches, epochs):
       epoch_loss += batch_loss.item()
 
       model.opt.zero_grad()
-      # batch_loss.div(batch_size).backward()
       batch_loss.backward()
       model.opt.step()
 
@@ -85,10 +84,10 @@ if __name__ == "__main__":
   N, H, W, C = x.size()
   D = H * W * C
 
-  # vae = models.VAE1(D, 400, 20).to(device)
+  vae = models.VAE1(D, 400, 20).to(device)
   # vae = models.VAE2(H, W, C, 16, 8, 20).to(device)
   # vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
-  vae = models.VAE3(H, W, C, 32, 64, 2).to(device)
+  # vae = models.VAE3(H, W, C, 32, 64, 2).to(device)
 
   train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs)
 
