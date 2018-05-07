@@ -98,7 +98,7 @@ class Flatten(nn.Module):
     super(Flatten, self).__init__()
 
   def forward(self, x):
-    return x.resize_(x.size(0), -1)
+    return x.reshape(x.size(0), -1)
 
 class Lambda(nn.Module):
   def __init__(self, f, g):
@@ -117,7 +117,7 @@ class Reshape(nn.Module):
     self.size = size
 
   def forward(self, x):
-    return x.resize_(x.size(0), *self.size)
+    return x.reshape(x.size(0), *self.size)
 
 class VAE3(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_latent):
