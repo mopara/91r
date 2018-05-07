@@ -71,6 +71,7 @@ class VAE2(nn.Module):
   def encode(self, x):
     h = self.pre(x)
 
+    print x.shape, h.shape #
     h.reshape(h.size(0), -1)
 
     return (self.mean_fc(h), self.log_var_fc(h))
