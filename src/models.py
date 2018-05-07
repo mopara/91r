@@ -79,6 +79,39 @@ class VAE(nn.Module):
   def forward(self, x, y):
     return forward(self, x, y, elbo_loss)
 
+class VAE2(nn.Module):
+  def __init__(self, D_in, D_h1, D_h2, D_h3, D_z):
+    super(VAE, self).__init__()
+
+    mean_fc = nn.Linear(D_h3, D_z)
+    log_var_fc = nn.Linear(D_h3, D_z)
+
+    self.enc = enc = nn.Sequential(
+      nn.Linear(D_in, D_h1),
+      nn.ReLU(inplace=True),
+      nn.Linear(D_h1, D_h2),
+      nn.ReLU(inplace=True),
+      nn.Linear(D_h2, D_h3),
+      nn.ReLU(inplace=True),
+      Lambda(mean_fc, log_var_fc))
+    self.dec = dec = nn.Sequential(
+      nn.Linear(D_z, D_h3),
+      nn.ReLU(inplace=True),
+      nn.Linear(D_z3, D_h2),
+      nn.ReLU(inplace=True),
+      nn.Linear(D_h2, D_h1),
+      nn.ReLU(inplace=True),
+      nn.Linear(D_h1, D_in),
+      nn.Sigmoid())
+    self.opt = optim.Adam(it.chain(enc.parameters(), mean_fc.parameters(),
+      log_var_fc.parameters(), dec.parameters()), lr=1e-3)
+
+  def preprocess(self, x):
+    return flatten(x)
+
+  def forward(self, x, y):
+    return forward(self, x, y, elbo_loss)
+
 class CVAE(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_z):
     super(CVAE, self).__init__()
@@ -176,7 +209,3 @@ class InfoVAE(nn.Module):
     nll = y_prd.sub(y).pow_(2).mean()
 
     return (y_prd, mmd.add_(nll))
-
-class BVAE(nn.Module):
-  def __init__(self):
-    pass

@@ -44,8 +44,6 @@ def train(model, batches, epochs):
       batch_loss.backward()
       model.opt.step()
 
-      print batch_loss
-
     print "Epoch: %03d [%0.1fs]\tAverage Train Loss: %g" % (epoch,
       time.time()-begin, epoch_loss/N)
 
@@ -86,10 +84,10 @@ if __name__ == "__main__":
 
   vae = {
     "vae": models.VAE(D, 400, 20),
+    "vae2": models.VAE2(D, 128, 64, 32),
     "cvae": models.CVAE(H, W, C, 64, 128, 2),
     # "cvae": models.CVAE(H, W, C, 8, 32, 2),
     "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, 2),
-    # "dvae": models.BVAE(...)
   }[args.model].to(device)
 
   x = vae.preprocess(x)
