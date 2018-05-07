@@ -110,7 +110,7 @@ if __name__ == "__main__":
       test_x = get_data(test_file, gpu)
     else:
       test_x = None
-s
+
     for D_z in (2, 4, 8, 16, 32, 64):
       for (name, vae) in {
         "vae": models.VAE(D, 400, D_z),
