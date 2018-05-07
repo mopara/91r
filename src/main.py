@@ -78,12 +78,16 @@ if __name__ == "__main__":
   device = t.device("cuda" if t.cuda.is_available() else "cpu")
 
   x = get_data(args.train, device)
+
   N, H, W, C = x.size()
   D = H * W * C
 
   vae = {
     "vae": models.VAE(D, 400, 20),
-    "cvae": models.CVAE(H, W, C, 64, 128, 2) # 64, 128, 2
+    # "cvae": models.CVAE(H, W, C, 64, 128, 2),
+    "cvae": models.CVAE(H, W, C, 8, 32, 2),
+    "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, 2),
+    # "dvae": models.BVAE(...)
   }[args.model].to(device)
 
   x = vae.preprocess(x)

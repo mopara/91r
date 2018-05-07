@@ -16,14 +16,11 @@ def sample(model, mean, log_var):
   else:
     return mean
 
-def reg_loss(y_prd, y, mean, log_var):
+def elbo_loss(y_prd, y, mean, log_var):
   bce = f.binary_cross_entropy(y_prd, y, size_average=False)
   kld = log_var.add(1).sub_(mean.pow(2)).sub_(log_var.exp()).sum().mul(-0.5)
 
   return bce.add_(kld)
-
-def mmd_loss(y_prd, y, mean, log_var):
-  pass
 
 def forward(model, x, y, loss):
   mean, log_var = model.enc(x)
@@ -80,7 +77,7 @@ class VAE(nn.Module):
     return flatten(x)
 
   def forward(self, x, y):
-    return forward(self, x, y, reg_loss)
+    return forward(self, x, y, elbo_loss)
 
 class CVAE(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_z):
@@ -124,4 +121,67 @@ class CVAE(nn.Module):
     return channels_first(x)
 
   def forward(self, x, y):
-    return forward(self, x, y, reg_loss)
+    return forward(self, x, y, elbo_loss)
+
+class InfoVAE(nn.Module):
+  def __init__(self, H, W, C_in, C_h1, C_h2, D_h, D_z):
+    super(InfoVAE, self).__init__()
+
+    self.D_z = D_z
+
+    self.enc = enc = nn.Sequential(
+      nn.Conv2d(C_in, C_h1, 4, 2, padding=1), # 28 -> 14
+      nn.LeakyReLU(inplace=True),
+      nn.Conv2d(C_h1, C_h2, 4, 2, padding=1), # 14 -> 7
+      nn.LeakyReLU(inplace=True),
+      Flatten(),
+      nn.Linear(C_h2*H/4*W/4, D_h),
+      nn.LeakyReLU(inplace=True),
+      nn.Linear(D_h, D_z))
+    self.dec = dec = nn.Sequential(
+      nn.Linear(D_z, D_h),
+      nn.ReLU(),
+      nn.Linear(D_h, C_h2*H/4*W/4),
+      nn.ReLU(),
+      Reshape(C_h2, H/4, W/4),
+      nn.ConvTranspose2d(C_h2, C_h1, 4, 2, padding=1),
+      nn.ReLU(),
+      nn.ConvTranspose2d(C_h1, C_in, 4, 2, padding=1),
+      nn.Sigmoid())
+    self.opt = optim.Adam(it.chain(enc.parameters(), dec.parameters()))
+
+  def preprocess(self, x):
+    return channels_first(x)
+
+  def kernel(self, a, b):
+    N_a, D = a.size()
+    N_b = b.size(0)
+
+    a = a.unsqueeze(1).expand(N_a, N_b, D)
+    b = b.unsqueeze(0).expand(N_a, N_b, D)
+
+    return a.sub_(b).pow_(2).mean(dim=2).div_(D).mul_(-1).exp_()
+
+  def mmd_loss(self, y_prd, y):
+    y_prd_k = self.kernel(y_prd, y_prd)
+    y_k = self.kernel(y, y)
+    y_prd_y_k = self.kernel(y_prd, y)
+
+    mmd = y_prd_y_k.mul(-2).add_(y_prd_k).add_(y_k).mean()
+
+    nll = y_prd.sub(y).pow_(2).mean()
+
+    return mmd.add_(nll)
+
+  def forward(self, x, y):
+    z = self.enc(x)
+    y_prd = self.dec(z)
+
+    mmd = self.mmd_loss(z, t.randn_like(z))
+    nll = y_prd.sub(y).pow_(2).mean()
+
+    return (y_prd, mmd.add_(nll))
+
+class BVAE(nn.Module):
+  def __init__(self):
+    pass

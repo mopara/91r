@@ -62,3 +62,7 @@ keep ssh open:
 data:
 - server: python src/data.py mnist -i mnist/src/*-ubyte -o mnist/
 - server: python src/data.py vids -i vids/src/a4.sax.mov -o vids/
+
+ssh:
+- send files back from server
+  - https://superuser.com/a/818614

@@ -1,3 +1,6 @@
+# https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder_deconv.py
+###############################################################################
+
 '''This script demonstrates how to build a variational autoencoder
 with Keras and deconvolution layers.
 
