@@ -2,6 +2,7 @@ import argparse
 import data
 import models
 import numpy as np
+import os.path as path
 import time
 import torch as t
 import torch.utils.data as data
@@ -97,8 +98,8 @@ if __name__ == "__main__":
     ("vids/a4.sax.pt", None), ("vids/e5.pratice.pt", None))
 
   for (train_file, test_file) in files:
-    train_file = prefix + train_file
-    test_file = prefix + test_file
+    train_file = join(prefix, train_file)
+    test_file = join(prefix, test_file)
 
     train_x = get_data(train_file, gpu)
 
