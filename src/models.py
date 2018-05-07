@@ -98,7 +98,7 @@ class Flatten(nn.Module):
     super(Flatten, self).__init__()
 
   def forward(self, x):
-    return x.reshape(x.size(0), -1)
+    return x.resize_(x.size(0), -1)
 
 class Lambda(nn.Module):
   def __init__(self, f, g):
@@ -117,7 +117,7 @@ class Reshape(nn.Module):
     self.size = size
 
   def forward(self, x):
-    return x.reshape(x.size(0), *self.size)
+    return x.resize_(x.size(0), *self.size)
 
 class VAE3(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_latent):
@@ -129,31 +129,31 @@ class VAE3(nn.Module):
     self.enc = enc = nn.Sequential(
       nn.ZeroPad2d((0, 1, 0, 1)),
       nn.Conv2d(C_in, C_h, 2),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.ZeroPad2d((0, W % 2, 0, H % 2)),
       nn.Conv2d(C_h, C_h, 2, 2),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Conv2d(C_h, C_h, 3, padding=1),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Conv2d(C_h, C_h, 3, padding=1),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       Flatten(),
       nn.Linear(C_h*H/2*W/2, D_h),
       Lambda(mean_fc, log_var_fc))
     self.dec = dec = nn.Sequential(
       nn.Linear(D_latent, D_h),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Linear(D_h, C_h*H/2*W/2),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       Reshape(C_h, H/2, W/2),
       nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.ConvTranspose2d(C_h, C_h, 3, padding=1),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.ConvTranspose2d(C_h, C_h, 3, 2),
-      nn.ReLU(),
+      nn.ReLU(inplace=True),
       nn.Conv2d(C_h, C_in, 2),
-      nn.Sigmoid())
+      nn.Sigmoid(inplace=True))
     self.opt = optim.RMSprop(it.chain(enc.parameters(), mean_fc.parameters(),
       log_var_fc.parameters(), dec.parameters()), lr=1e-3, alpha=0.9,
       eps=1e-7)
