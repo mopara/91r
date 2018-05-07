@@ -81,7 +81,7 @@ class VAE2(nn.Module):
     else:
       return mean
 
-  def forward(x):
+  def forward(self, x):
     mean, log_var = self.encode(x)
     y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).resize_(1, 60,
       80))
