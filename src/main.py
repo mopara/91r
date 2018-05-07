@@ -79,8 +79,7 @@ if __name__ == "__main__":
   if not args.random:
     t.manual_seed(0)
 
-  # device = t.device("cuda" if t.cuda.is_available() else "cpu")
-  device = t.device("cpu")
+  device = t.device("cuda" if t.cuda.is_available() else "cpu")
 
   x, xf, xc = get_data(args.train, device)
   N, H, W, C = x.size()
