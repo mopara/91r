@@ -3,7 +3,7 @@ import cv2
 import os.path as path
 import numpy as np
 import struct
-import torch as T
+import torch as t
 
 def parse_args():
   parser = argparse.ArgumentParser()
@@ -18,11 +18,14 @@ def parse_args():
 
   return (args.action, args.o, args.i)
 
+def stem(file_name):
+  return path.splitext(path.basename(file_name))[0]
+
 def save(dst_dir, file_name, arr):
-  file_name = path.join(dst_dir, path.splitext(path.basename(file_name))[0])
+  file_name = path.join(dst_dir, stem(file_name))
 
   np.save(file_name, arr)
-  T.save(T.tensor(arr), file_name+".pt")
+  t.save(t.tensor(arr), file_name+".pt")
 
   print "%s\tshape: %s" % (file_name, arr.shape)
 

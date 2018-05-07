@@ -1,4 +1,5 @@
 import argparse
+import data
 import models
 import numpy as np
 import time
@@ -25,16 +26,19 @@ def parse_args():
 
   return parser.parse_args()
 
-def train(model, batches, epochs):
-  model.train()
+def train(model, train_batches, epochs, test_batches):
+  train_hist = np.empty((epochs, 2))
+  test_hist = np.empty((epochs, 2))
 
-  N = len(batches.dataset)
+  N_train = len(train_batches.dataset)
 
   for epoch in xrange(epochs):
     begin = time.time()
     epoch_loss = 0
 
-    for (x, y) in batches:
+    model.train()
+
+    for (x, y) in train_batches:
       batch_size = x.size(0)
 
       y_prd, batch_loss = model(x, y)
@@ -44,18 +48,32 @@ def train(model, batches, epochs):
       batch_loss.backward()
       model.opt.step()
 
+    avg_epoch_loss = epoch_loss/N_train
+
+    train_hist[epoch,0] = epoch_loss
+    train_hist[epoch,1] = avg_epoch_loss
+
     print "Epoch: %03d [%0.1fs]\tAverage Train Loss: %g" % (epoch,
-      time.time()-begin, epoch_loss/N)
+      time.time()-begin, avg_epoch_loss)
 
-def test(model, batches):
-  model.eval()
+    if test_batches:
+      model.eval()
 
-  with t.no_grad():
-    loss = sum(model(x, y)[1].item() for (x, y) in batches)
+      with t.no_grad():
+        loss = sum(model(x, y)[1].item() for (x, y) in test_batches)
+        avg_loss = loss/len(test_batches.dataset)
 
-  print "Average Test Loss: %g" % (loss/len(batches.dataset))
+      test_hist[epoch,0] = loss
+      test_hist[epoch,1] = avg_loss
 
-# dont load frames into gpu memory
+      print "\t\t\tAverage Test Loss: %g" % avg_loss
+
+  if test_batches:
+    return (train_hist, test_hist)
+  else:
+    return (train_hist, None)
+
+# todo: dont load frames into gpu memory
 def get_data(file_name, device):
   x = t.load(file_name).to(device).float().div_(255)
 
@@ -70,31 +88,60 @@ def get_batches(x, y, batch_size, shuffle):
     shuffle=shuffle)
 
 if __name__ == "__main__":
-  args = parse_args()
+  prefix = "/home/ra_login/91r"
 
-  if not args.random:
-    t.manual_seed(0)
+  files = (
+    ("mnist/train-images-idx3-ubyte.pt", "mnist/t10k-images-idx3-ubyte.pt"),
+    ("vids/a4.sax.pt", None), ("vids/e5.pratice.pt", None))
 
-  device = t.device("cuda" if t.cuda.is_available() else "cpu")
+  for (train_file, test_file) in files:
+    train_file = prefix + train_file
+    test_file = prefix + test_file
 
-  x = get_data(args.train, device)
+    train_x = get_data(train_file, device)
 
-  N, H, W, C = x.size()
-  D = H * W * C
+    N, H, W, C = train_x.size()
+    D = H * W * C
 
-  vae = {
-    "vae": models.VAE(D, 400, 20),
-    "vae2": models.VAE2(D, 128, 64, 32, 2),
-    "cvae": models.CVAE(H, W, C, 64, 128, 2),
-    # "cvae": models.CVAE(H, W, C, 8, 32, 2),
-    "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, 2),
-  }[args.model].to(device)
+    if test_file:
+      test_x = get_data(test_file)
+    else:
+      test_x = None
 
-  x = vae.preprocess(x)
+    for D_z in (2, 4, 8, 16, 32, 64):
+      for (name, vae) in {
+        "vae": models.VAE(D, 400, D_z),
+        "vae2": models.VAE2(D, 128, 64, 32, D_z),
+        # "cvae": models.CVAE(H, W, C, 64, 128, D_z),
+        "cvae": models.CVAE(H, W, C, 8, 32, D_z),
+        "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, D_z)}:
 
-  train(vae, get_batches(x, x, args.batch_size, args.shuffle), args.epochs)
+        vae = vae.to("gpu")
 
-  if args.test:
-    x = vae.preprocess(get_data(args.test, device))
+        train_x = vae.preprocess(train_x)
+        train_batches = get_batches(train_x, train_x, 128, True)
 
-    test(vae, get_batches(x, x, args.batch_size, args.shuffle))
+        if test_batches:
+          test_x = vae.preprocess(test_x)
+          test_batches = get_batches(test_x, test_x, 128, True)
+        else:
+          test_x = None
+          test_batches = None
+
+        train_hist, test_hist = train(vae, train_batches, 50, test_batches)
+
+        # ex. src/hist/vae-hist-e5.practice.pt
+        train_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
+          % D_z) + data.stem(train_file))
+        test_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
+          % D_z) + data.stem(test_file))
+
+        np.save(train_filename, train_hist)
+        np.save(test_filename, test_hist)
+
+        t.save(vae.state_dict(), train_filename.replace("-hist-", "-model-") +
+          ".pt")
+
+        vae.to("cpu")
+
+        del vae
