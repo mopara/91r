@@ -72,6 +72,8 @@ class VAE2(nn.Module):
     h = self.pre(x)
     h = h.reshape(h.size(0), -1)
 
+    print h.shape
+
     return (self.mean_fc(h), self.log_var_fc(h))
 
   def sample(self, mean, log_var):
