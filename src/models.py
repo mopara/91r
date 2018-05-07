@@ -6,7 +6,7 @@ import torch.optim as optim
 
 def channels_first(x):
   if len(x.size()) == 3:
-    x.unsqueeze(3)
+    x.unsqueeze_(3)
 
   return x.permute(0, 3, 1, 2) # NHWC -> NCHW
 
