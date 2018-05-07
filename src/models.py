@@ -141,6 +141,7 @@ class VAE3(nn.Module):
       nn.ReLU(),
       nn.Conv2d(C_h, C_in, 2),
       nn.Sigmoid())
+    self.opt = optim.RMSprop(lr=1e-3, alpha=0.9, eps=1e-7)
 
   def encode(self, x):
     h = self.pre(x)
