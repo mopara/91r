@@ -45,6 +45,9 @@ class VAE2(nn.Module):
   def __init__(self, H, W, C_in, C1, C2, D_latent):
     super(VAE2, self).__init__()
 
+    self.H = H
+    self.W = W
+
     self.pre = pre = nn.Sequential(
       nn.Conv2d(C_in, C1, 3, padding=1), # P' = (F-1)/2 = (3-1)/2 = 1
       nn.ReLU(),
@@ -84,8 +87,8 @@ class VAE2(nn.Module):
 
   def forward(self, x, y):
     mean, log_var = self.encode(x)
-    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(1, H/4,
-      W/4))
+    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(1,
+      self.H/4, self.W/4))
 
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
     kld = -0.5*(1+log_var).sub_(mean.pow(2)).sub_(log_var.exp()).sum()
