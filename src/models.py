@@ -97,7 +97,7 @@ class VAE2(nn.Module):
     self.dec = dec = nn.Sequential(
       nn.Linear(D_z, D_h3),
       nn.ReLU(inplace=True),
-      nn.Linear(D_z3, D_h2),
+      nn.Linear(D_h3, D_h2),
       nn.ReLU(inplace=True),
       nn.Linear(D_h2, D_h1),
       nn.ReLU(inplace=True),
