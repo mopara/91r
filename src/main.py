@@ -25,7 +25,7 @@ def parse_args():
 
   return parser.parse_args()
 
-def train(model, batches, epochs, device):
+def train(model, batches, epochs):
   model.train()
 
   N = len(batches.dataset)
@@ -35,9 +35,6 @@ def train(model, batches, epochs, device):
     epoch_loss = 0
 
     for (x, y) in batches:
-      x = x.to(device)
-      y = y.to(device)
-
       batch_size = x.size(0)
 
       y_prd, batch_loss = model(x, y)
@@ -51,15 +48,15 @@ def train(model, batches, epochs, device):
     print "Epoch: %03d [%0.1fs]\tAverage Train Loss: %g" % (epoch,
       time.time()-begin, epoch_loss/N)
 
-def test(model, batches, device):
+def test(model, batches):
   model.eval()
 
   with t.no_grad():
-    loss = sum(model(x.to(device), y.to(device))[1].item() for (x, y) in
-      batches)
+    loss = sum(model(x, y)[1].item() for (x, y) in batches)
 
   print "Average Test Loss: %g" % (loss/len(batches.dataset))
 
+# dont load frames into gpu memory
 def get_data(file_name):
   x = t.load(file_name).float().div_(255)
 
@@ -92,8 +89,7 @@ if __name__ == "__main__":
   # vae = models.VAE2(H, W, C, 16, 8, 20).to(device)
   vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
 
-  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs,
-    device)
+  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs)
 
   if args.test:
     x, xf, xc = get_data(args.test)
