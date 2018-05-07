@@ -98,8 +98,8 @@ if __name__ == "__main__":
     ("vids/a4.sax.pt", None), ("vids/e5.pratice.pt", None))
 
   for (train_file, test_file) in files:
-    train_file = join(prefix, train_file)
-    test_file = join(prefix, test_file)
+    train_file = path.join(prefix, train_file)
+    test_file = path.join(prefix, test_file)
 
     train_x = get_data(train_file, gpu)
 
