@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
   vae = {
     "vae": models.VAE(D, 400, 20),
-    "cvae": models.CVAE(H, W, C, 8, 32, 2) # 64, 128, 2
+    "cvae": models.CVAE(H, W, C, 64, 128, 2) # 64, 128, 2
   }[args.model].to(device)
 
   x = vae.preprocess(x)
