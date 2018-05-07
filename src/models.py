@@ -18,7 +18,7 @@ def sample(model, mean, log_var):
 
 def elbo_loss(y_prd, y, mean, log_var):
   bce = f.binary_cross_entropy(y_prd, y, size_average=False)
-  kld = log_var.add(1).sub_(mean.pow(2)).sub_(log_var.exp()).sum().mul(-0.5)
+  kld = log_var.add(1).sub_(mean.pow(2)).sub_(log_var.exp()).sum().mul_(-0.5)
 
   return bce.add_(kld)
 
@@ -127,8 +127,6 @@ class InfoVAE(nn.Module):
   def __init__(self, H, W, C_in, C_h1, C_h2, D_h, D_z):
     super(InfoVAE, self).__init__()
 
-    self.D_z = D_z
-
     self.enc = enc = nn.Sequential(
       nn.Conv2d(C_in, C_h1, 4, 2, padding=1), # 28 -> 14
       nn.LeakyReLU(inplace=True),
@@ -176,7 +174,7 @@ class InfoVAE(nn.Module):
     mmd = self.mmd_loss(z, t.randn_like(z))
     nll = y_prd.sub(y).pow_(2).mean()
 
-    return (y_prd, mmd.add_(nll))
+    return (y_prd, mmd.add(nll))
 
 class BVAE(nn.Module):
   def __init__(self):
