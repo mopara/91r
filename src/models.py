@@ -74,7 +74,7 @@ class VAE2(nn.Module, VAE):
       Unflatten(1, 60, 80),
       nn.Conv2d(1, C2, 3, padding=1),
       nn.ReLU(),
-      nn.Upsample(scale_factor=2, mode="nearest") # 60, 80 -> 120, 160
+      nn.Upsample(scale_factor=2, mode="nearest"), # 60, 80 -> 120, 160
       nn.Conv2d(C2, C1, 3, padding=1),
       nn.ReLU(),
       nn.Upsample(scale_factor=2, mode="nearest") # 120, 160 -> 240, 320
