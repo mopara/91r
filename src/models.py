@@ -87,7 +87,7 @@ class VAE2(nn.Module):
 
   def forward(self, x, y):
     mean, log_var = self.encode(x)
-    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(1,
+    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(-1, 1,
       self.H/4, self.W/4))
 
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
