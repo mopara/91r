@@ -89,9 +89,9 @@ if __name__ == "__main__":
   # vae = models.VAE3(H, W, C, 64, 128, 2).to(device)
   # vae = models.VAE3(H, W, C, 32, 64, 2).to(device)
 
-  train(vae, get_batches(xc, xc, args.batch_size, args.shuffle), args.epochs)
+  train(vae, get_batches(xf, xf, args.batch_size, args.shuffle), args.epochs)
 
   if args.test:
     x, xf, xc = get_data(args.test, device)
 
-    test(vae, get_batches(xc, xc, args.batch_size, args.shuffle))
+    test(vae, get_batches(xf, xf, args.batch_size, args.shuffle))
