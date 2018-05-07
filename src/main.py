@@ -41,8 +41,8 @@ def train(model, batches, epochs):
       epoch_loss += batch_loss.item()
 
       model.opt.zero_grad()
-      batch_loss.div(batch_size).backward()
-      # batch_loss.backward()
+      # batch_loss.div(batch_size).backward()
+      batch_loss.backward()
       model.opt.step()
 
     print "Epoch: %03d [%0.1fs]\tAverage Train Loss: %g" % (epoch,
