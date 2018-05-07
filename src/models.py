@@ -158,23 +158,23 @@ class InfoVAE(nn.Module):
     a = a.unsqueeze(1).expand(N_a, N_b, D)
     b = b.unsqueeze(0).expand(N_a, N_b, D)
 
-    return a.sub_(b).pow_(2).mean(dim=2).div_(D).mul_(-1).exp_()
+    return a.sub(b).pow_(2).mean(dim=2).div_(D).mul_(-1).exp_()
 
   def mmd_loss(self, y_prd, y):
     y_prd_k = self.kernel(y_prd, y_prd)
     y_k = self.kernel(y, y)
     y_prd_y_k = self.kernel(y_prd, y)
 
-    return y_prd_y_k.mul(-2).add(y_prd_k).add(y_k).mean()
+    return y_prd_y_k.mul(-2).add_(y_prd_k).add_(y_k).mean()
 
   def forward(self, x, y):
     z = self.enc(x)
     y_prd = self.dec(z)
 
     mmd = self.mmd_loss(z, t.randn_like(z))
-    nll = y_prd.sub(y).pow(2).mean()
+    nll = y_prd.sub(y).pow_(2).mean()
 
-    return (y_prd, mmd.add(nll))
+    return (y_prd, mmd.add_(nll))
 
 class BVAE(nn.Module):
   def __init__(self):
