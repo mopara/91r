@@ -94,7 +94,7 @@ if __name__ == "__main__":
   gpu = t.device("cuda")
 
   files = (
-    ("mnist/train-images-idx3-ubyte.pt", "mnist/t10k-images-idx3-ubyte.pt"),
+    # ("mnist/train-images-idx3-ubyte.pt", "mnist/t10k-images-idx3-ubyte.pt"),
     # ("vids/a4.sax.pt", None),
     ("vids/e5.practice.pt", None))
 
