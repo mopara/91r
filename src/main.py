@@ -120,7 +120,7 @@ if __name__ == "__main__":
         "vae2": models.VAE2(D, 128, 64, 32, D_z),
         # "cvae": models.CVAE(H, W, C, 64, 128, D_z),
         "cvae": models.CVAE(H, W, C, 8, 32, D_z),
-        "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, D_z)}.items():
+        # "infovae": models.InfoVAE(H, W, C, 64, 128, 1024, D_z)}.items():
         # "infovae": models.InfoVAE(H, W, C, 16, 32, 256, D_z)}.items():
 
         print ">>>>>>>>>"
