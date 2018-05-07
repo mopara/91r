@@ -25,7 +25,7 @@ class VAE(object):
 
     return (y_prd, bce+kld)
 
-class VAE1(VAE):
+class VAE1(nn.Module, VAE):
   def __init__(self, D_in, D_hidden, D_latent):
     super(VAE1, self).__init__()
 
