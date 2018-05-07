@@ -122,7 +122,8 @@ kl_loss = - 0.5 * K.sum(1 + z_log_var - K.square(z_mean) - K.exp(z_log_var), axi
 vae_loss = K.mean(xent_loss + kl_loss)
 vae.add_loss(vae_loss)
 
-vae.compile(optimizer='rmsprop')
+# vae.compile(optimizer='rmsprop')
+vae.compile(optimizer='rmsprop', loss=None)
 vae.summary()
 
 # train the VAE on MNIST digits
