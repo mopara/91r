@@ -95,7 +95,8 @@ if __name__ == "__main__":
 
   files = (
     ("mnist/train-images-idx3-ubyte.pt", "mnist/t10k-images-idx3-ubyte.pt"),
-    ("vids/a4.sax.pt", None), ("vids/e5.pratice.pt", None))
+    # ("vids/a4.sax.pt", None),
+    ("vids/e5.pratice.pt", None))
 
   for (train_file, test_file) in files:
     train_file = path.join(prefix, train_file)
