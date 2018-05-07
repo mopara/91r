@@ -151,5 +151,5 @@ if __name__ == "__main__":
 
         del vae
 
-    del train_x.to(cpu)
-    del test_x.to(cpu)
+    del train_x
+    del test_x
