@@ -113,7 +113,7 @@ class VAE3(nn.Module):
     self.log_var_fc = log_var_fc = nn.Linear(D_h, D_latent)
     self.decode_1 = nn.Sequential(
       nn.Linear(D_latent, D_h),
-      nn.ReLU()
+      nn.ReLU(),
       nn.Linear(D_h, C_h*H/2*W/2),
       nn.ReLU())
     self.decode_2 = nn.Sequential(
