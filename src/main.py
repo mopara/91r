@@ -99,7 +99,9 @@ if __name__ == "__main__":
 
   for (train_file, test_file) in files:
     train_file = path.join(prefix, train_file)
-    test_file = path.join(prefix, test_file)
+
+    if test_file:
+      test_file = path.join(prefix, test_file)
 
     TRAIN_X = get_data(train_file, gpu)
 
@@ -141,11 +143,14 @@ if __name__ == "__main__":
         # ex. src/hist/vae-hist-e5.practice.pt
         train_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
           % D_z) + fm.stem(train_file))
-        test_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
-          % D_z) + fm.stem(test_file))
-
         np.save(train_filename, train_hist)
-        np.save(test_filename, test_hist)
+
+
+        if test_file:
+          test_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
+            % D_z) + fm.stem(test_file))
+
+          np.save(test_filename, test_hist)
 
         t.save(vae.state_dict(), train_filename.replace("-hist-", "-model-") +
           ".pt")
