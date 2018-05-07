@@ -100,9 +100,20 @@ class Flatten(nn.Module):
   def forward(self, x):
     return x.reshape(x.size(0), -1)
 
+class Lambda(nn.Module):
+  def __init__(self, f, g):
+    super(Lambda, self).__init__()
+
+    self.f = f
+    self.g = g
+
+  def forward(self, x):
+    return (self.f(x), self.g(x))
+
 class Reshape(nn.Module):
   def __init__(self, *size):
     super(Reshape, self).__init__()
+
     self.size = size
 
   def forward(self, x):
@@ -112,7 +123,10 @@ class VAE3(nn.Module):
   def __init__(self, H, W, C_in, C_h, D_h, D_latent):
     super(VAE3, self).__init__()
 
-    self.pre = pre = nn.Sequential(
+    mean_fc = nn.Linear(D_h, D_latent)
+    log_var_fc = nn.Linear(D_h, D_latent)
+
+    self.enc = enc = nn.Sequential(
       nn.ZeroPad2d((0, 1, 0, 1)),
       nn.Conv2d(C_in, C_h, 2),
       nn.ReLU(),
@@ -124,10 +138,9 @@ class VAE3(nn.Module):
       nn.Conv2d(C_h, C_h, 3, padding=1),
       nn.ReLU(),
       Flatten(),
-      nn.Linear(C_h*H/2*W/2, D_h))
-    self.mean_fc = mean_fc = nn.Linear(D_h, D_latent)
-    self.log_var_fc = log_var_fc = nn.Linear(D_h, D_latent)
-    self.decode = nn.Sequential(
+      nn.Linear(C_h*H/2*W/2, D_h),
+      Lambda(mean_fc, log_var_fc))
+    self.dec = dec = nn.Sequential(
       nn.Linear(D_latent, D_h),
       nn.ReLU(),
       nn.Linear(D_h, C_h*H/2*W/2),
@@ -141,13 +154,9 @@ class VAE3(nn.Module):
       nn.ReLU(),
       nn.Conv2d(C_h, C_in, 2),
       nn.Sigmoid())
-    self.opt = optim.RMSprop(it.chain(pre.parameters(), mean_fc.parameters(),
-      log_var_fc.parameters(), decode.parameters()), lr=1e-3, alpha=0.9, eps=1e-7)
-
-  def encode(self, x):
-    h = self.pre(x)
-
-    return (self.mean_fc(h), self.log_var_fc(h))
+    self.opt = optim.RMSprop(it.chain(enc.parameters(), mean_fc.parameters(),
+      log_var_fc.parameters(), dec.parameters()), lr=1e-3, alpha=0.9,
+      eps=1e-7)
 
   def sample(self, mean, log_var):
     if self.training:
@@ -156,8 +165,8 @@ class VAE3(nn.Module):
       return mean
 
   def forward(self, x, y):
-    mean, log_var = self.encode(x)
-    y_prd = self.decode(self.sample(mean, log_var))
+    mean, log_var = self.enc(x)
+    y_prd = self.dec(self.sample(mean, log_var))
 
     bce = f.binary_cross_entropy(y_prd, y, size_average=False)
     kld = -0.5*(1+log_var).sub_(mean.pow(2)).sub_(log_var.exp()).sum()
