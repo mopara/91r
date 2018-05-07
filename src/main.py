@@ -16,8 +16,8 @@ def parse_args():
     help="input batch size for training (default: 128)", metavar="N")
   parser.add_argument("-n", "--epochs", default=10, type=int,
     help="number of epochs to train (default: 10)", metavar="E")
-  parser.add_argument("-m", "--model", default=1, type=int,
-    help="model to train (default: 1)", metavar="M")
+  parser.add_argument("-m", "--model", default="vae", type="str",
+    help="model to train (default: 'vae')", metavar="M")
   parser.add_argument("-j", "--test", type=str, help="set testing dataset",
     metavar="X")
   parser.add_argument("-i", "--train", type=str, required=True,
@@ -82,8 +82,8 @@ if __name__ == "__main__":
   D = H * W * C
 
   vae = {
-    1: models.VAE1(D, 400, 20),
-    3: models.VAE3(H, W, C, 8, 32, 2) # 64, 128, 2
+    "vae": models.VAE(D, 400, 20),
+    "cvae": models.CVAE(H, W, C, 8, 32, 2) # 64, 128, 2
   }[args.model].to(device)
 
   x = vae.preprocess(x)
