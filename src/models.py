@@ -165,14 +165,14 @@ class InfoVAE(nn.Module):
     y_k = self.kernel(y, y)
     y_prd_y_k = self.kernel(y_prd, y)
 
-    return y_prd_y_k.mul(-2).add_(y_prd_k).add_(y_k).mean()
+    return y_prd_y_k.mul(-2).add(y_prd_k).add(y_k).mean()
 
   def forward(self, x, y):
     z = self.enc(x)
     y_prd = self.dec(z)
 
     mmd = self.mmd_loss(z, t.randn_like(z))
-    nll = y_prd.sub(y).pow_(2).mean()
+    nll = y_prd.sub(y).pow(2).mean()
 
     return (y_prd, mmd.add(nll))
 
