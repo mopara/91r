@@ -101,18 +101,15 @@ if __name__ == "__main__":
     train_file = path.join(prefix, train_file)
     test_file = path.join(prefix, test_file)
 
-    train_x = get_data(train_file, gpu)
+    TRAIN_X = get_data(train_file, gpu)
 
-    N, H, W, C = train_x.size()
+    N, H, W, C = TRAIN_X.size()
     D = H * W * C
 
     if test_file:
-      test_x = get_data(test_file, gpu)
+      TEST_X = get_data(test_file, gpu)
     else:
-      test_x = None
-
-    print train_x if train_x is None else train_x.size()
-    print test_x if test_x is None else test_x.size()
+      TEST_X = None
 
     for D_z in (2, 4, 8, 16, 32, 64):
       for (name, vae) in {
@@ -129,11 +126,11 @@ if __name__ == "__main__":
 
         vae = vae.to(gpu)
 
-        train_x = vae.preprocess(train_x)
+        train_x = vae.preprocess(TRAIN_X)
         train_batches = get_batches(train_x, train_x, 128, True)
 
         if test_file:
-          test_x = vae.preprocess(test_x)
+          test_x = vae.preprocess(TEST_X)
           test_batches = get_batches(test_x, test_x, 128, True)
         else:
           test_x = None
