@@ -1,5 +1,5 @@
 import argparse
-import data
+import fm
 import models
 import numpy as np
 import os.path as path
@@ -110,7 +110,7 @@ if __name__ == "__main__":
       test_x = get_data(test_file, gpu)
     else:
       test_x = None
-
+s
     for D_z in (2, 4, 8, 16, 32, 64):
       for (name, vae) in {
         "vae": models.VAE(D, 400, D_z),
@@ -140,9 +140,9 @@ if __name__ == "__main__":
 
         # ex. src/hist/vae-hist-e5.practice.pt
         train_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
-          % D_z) + data.stem(train_file))
+          % D_z) + fm.stem(train_file))
         test_filename = path.join(prefix, "src/hist", name + ("-D_z=%d-hist-"
-          % D_z) + data.stem(test_file))
+          % D_z) + fm.stem(test_file))
 
         np.save(train_filename, train_hist)
         np.save(test_filename, test_hist)
