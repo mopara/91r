@@ -57,6 +57,7 @@ class VAE2(nn.Module):
       nn.MaxPool2d(2, padding=0)) # 120, 160 -> 60, 80
     self.mean_fc = mean_fc = nn.Linear((H*W)/16, D_latent)
     self.log_var_fc = log_var_fc = nn.Linear((H*W)/16, D_latent)
+    self.z_fc = z_fc = nn.Linear(D_latent, (H*W)/16)
     self.decode = decode = nn.Sequential(
       nn.Conv2d(1, C2, 3, padding=1),
       nn.ReLU(),
@@ -67,7 +68,8 @@ class VAE2(nn.Module):
       nn.Conv2d(C1, C_in, 3, padding=1),
       nn.Sigmoid())
     self.opt = optim.Adam(it.chain(self.pre.parameters(), mean_fc.parameters(),
-      log_var_fc.parameters(), decode.parameters()), lr=1e-3)
+      log_var_fc.parameters(), z_fc.parameters(), decode.parameters()),
+      lr=1e-3)
 
   def encode(self, x):
     h = self.pre(x)
@@ -83,7 +85,7 @@ class VAE2(nn.Module):
 
   def forward(self, x, y):
     mean, log_var = self.encode(x)
-    y_prd = self.decode(self.sample(mean, log_var).reshape(-1, 1,
+    y_prd = self.decode(self.z_fc(self.sample(mean, log_var)).reshape(-1, 1,
       self.H/4, self.W/4))
 
     print y_prd.shape, y.shape
