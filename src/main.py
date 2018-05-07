@@ -111,6 +111,8 @@ if __name__ == "__main__":
     else:
       test_x = None
 
+    print train_x and train_x.size(), test_x and test_x.size()
+
     for D_z in (2, 4, 8, 16, 32, 64):
       for (name, vae) in {
         "vae": models.VAE(D, 400, D_z),
