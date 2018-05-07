@@ -5,6 +5,9 @@ import torch.nn.functional as f
 import torch.optim as optim
 
 def channels_first(x):
+  if len(x.size() == 3):
+    x.unsqueeze(3)
+
   return x.permute(0, 3, 1, 2) # NHWC -> NCHW
 
 def flatten(x):
