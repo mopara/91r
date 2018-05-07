@@ -81,7 +81,7 @@ class VAE(nn.Module):
 
 class VAE2(nn.Module):
   def __init__(self, D_in, D_h1, D_h2, D_h3, D_z):
-    super(VAE, self).__init__()
+    super(VAE2, self).__init__()
 
     mean_fc = nn.Linear(D_h3, D_z)
     log_var_fc = nn.Linear(D_h3, D_z)
