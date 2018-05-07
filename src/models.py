@@ -25,7 +25,7 @@ class VAE(object):
 
     return (y_prd, bce+kld)
 
-class VAE1(nn.Module, VAE):
+class VAE1(VAE, nn.Module):
   def __init__(self, D_in, D_hidden, D_latent):
     super(VAE1, self).__init__()
 
@@ -55,7 +55,7 @@ class Unflatten(nn.Module):
   def forward(self, x):
     return x.view(*self.shape)
 
-class VAE2(nn.Module, VAE):
+class VAE2(VAE, nn.Module):
   def __init__(self, C_in, C1, C2, D_latent):
     super(VAE2, self).__init__()
 
