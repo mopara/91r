@@ -153,7 +153,7 @@ class VAE3(nn.Module):
       nn.ConvTranspose2d(C_h, C_h, 3, 2),
       nn.ReLU(inplace=True),
       nn.Conv2d(C_h, C_in, 2),
-      nn.Sigmoid(inplace=True))
+      nn.Sigmoid())
     self.opt = optim.RMSprop(it.chain(enc.parameters(), mean_fc.parameters(),
       log_var_fc.parameters(), dec.parameters()), lr=1e-3, alpha=0.9,
       eps=1e-7)
